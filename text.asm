@@ -216,6 +216,7 @@ INCLUDE "text/FuchsiaPokecenter.asm"
 INCLUDE "text/WardensHouse.asm"
 INCLUDE "text/SafariZoneGate.asm"
 INCLUDE "text/FuchsiaGym.asm"
+INCLUDE "engine/battle/just_slot_machine_stuff.asm" ; to free bank1E
 
 
 SECTION "Text 9", ROMX
