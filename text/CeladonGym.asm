@@ -86,10 +86,9 @@ _CeladonGymTM21NoRoomText::
 	done
 
 _CeladonGymBattleText2::
-	text "Hey!"
-
-	para "You are not"
-	line "allowed in here!"
+	text "Do you think a"   ; imported from Crystal
+	line "girls-only GYM"
+	cont "is rare?"
 	done
 
 _CeladonGymEndBattleText2::
@@ -124,8 +123,9 @@ _CeladonGymAfterBattleText3::
 	done
 
 _CeladonGymBattleText4::
-	text "Aren't you the"
-	line "peeping Tom?"
+	text "Were you looking"  ; imported from Crystal
+	line "at these flowers"
+	cont "or at me?"
 	done
 
 _CeladonGymEndBattleText4::

@@ -9,6 +9,15 @@ ELSE
 ENDC
 	jr GotPalID
 
+GetNidorinaPalID:
+	call ClearScreen
+IF GEN_2_GRAPHICS
+	ld a, PAL_NIDORINA
+ELSE
+	ld a, PAL_PURPLEMON
+ENDC
+	jr GotPalID
+
 GetRedPalID:
 	call ClearScreen
 IF GEN_2_GRAPHICS

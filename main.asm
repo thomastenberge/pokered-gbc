@@ -341,12 +341,13 @@ INCLUDE "engine/movie/splash.asm"
 INCLUDE "engine/movie/hall_of_fame.asm"
 INCLUDE "engine/overworld/healing_machine.asm"
 INCLUDE "engine/overworld/player_animations.asm"
-INCLUDE "engine/battle/ghost_marowak_anim.asm"
 INCLUDE "engine/battle/battle_transitions.asm"
 INCLUDE "engine/items/town_map.asm"
 INCLUDE "engine/gfx/mon_icons.asm"
 INCLUDE "engine/events/in_game_trades.asm"
 INCLUDE "engine/gfx/palettes.asm"
+INCLUDE "engine/items/tm_prices.asm"
+
 
 SECTION "Engine Save", ROMX
 
@@ -373,6 +374,7 @@ SECTION "Vending Machine", ROMX
 
 INCLUDE "engine/events/vending_machine.asm"
 INCLUDE "custom_functions/func_overworld.asm"
+INCLUDE "engine/battle/ghost_marowak_anim.asm"
 
 
 SECTION "Itemfinder 2", ROMX
@@ -392,6 +394,5 @@ INCLUDE "data/battle_anims/subanimations.asm"
 INCLUDE "data/battle_anims/frame_blocks.asm"
 INCLUDE "engine/movie/evolution.asm"
 INCLUDE "engine/overworld/elevator.asm"
-INCLUDE "engine/items/tm_prices.asm"
 
 INCLUDE "color/animations.asm"
