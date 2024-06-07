@@ -372,6 +372,7 @@ INCLUDE "engine/items/itemfinder.asm"
 SECTION "Vending Machine", ROMX
 
 INCLUDE "engine/events/vending_machine.asm"
+INCLUDE "custom_functions/func_overworld.asm"
 
 
 SECTION "Itemfinder 2", ROMX

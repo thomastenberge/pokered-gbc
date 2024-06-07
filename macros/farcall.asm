@@ -4,7 +4,7 @@ MACRO farcall
 	call Bankswitch
 ENDM
 
-callba EQUS "farcall"
+DEF callba EQUS "farcall"
 
 MACRO callfar
 	ld hl, \1
@@ -12,7 +12,7 @@ MACRO callfar
 	call Bankswitch
 ENDM
 
-callab EQUS "callfar"
+DEF callab EQUS "callfar"
 
 MACRO farjp
 	ld b, BANK(\1)
