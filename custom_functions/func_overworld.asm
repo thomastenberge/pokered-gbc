@@ -1,3 +1,37 @@
+;this function handles tracking of how fast to go on or off a bike
+;biking ORs with $2
+;running by holding B ORs with $1
+TrackRunBikeSpeed::
+	xor a
+	ld[wUnusedD119], a
+	ld a, [wWalkBikeSurfState]
+	dec a ; riding a bike? (0 value = TRUE)
+	call z, IsRidingBike
+	ld a, [hJoyHeld]
+	and B_BUTTON	;holding B to speed up? (non-zero value = TRUE)
+	call nz, IsRunning	;joenote - make holding B do double-speed while walking/surfing/biking
+	ld a, [wd736]
+	bit 7, a
+	call nz, IsSpinArrow	;player sprite spinning due to spin tiles (Rocket hideout / Viridian Gym)
+	ld a, [wUnusedD119]
+	cp 2	;is biking without speedup being done?
+	jr z, .skip	;if not make the states a value from 1 to 4 (excluding biking without speedup, which needs to be 2)
+	inc a	
+.skip
+	ld[wUnusedD119], a
+	ret
+IsRidingBike:
+	ld a, [wUnusedD119]
+	or $2
+	ld[wUnusedD119], a
+	ret
+IsRunning:
+IsSpinArrow:
+	ld a, [wUnusedD119]
+	or $1
+	ld[wUnusedD119], a
+	ret
+
 
 ;***************************************************************************************************
 ;these functions have been moved here from overworld.asm 
