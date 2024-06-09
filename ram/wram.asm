@@ -2044,9 +2044,13 @@ wPlayerGender::
 ; $00 = male
 ; $01 = female
 	ds 1
-	
+
+wItemFinderItemDirection::db
+wSawItemFinderText::db
+
 ; unused
-	ds 55
+	ds 53
+
 
 wObtainedHiddenItemsFlags:: flag_array MAX_HIDDEN_ITEMS
 
