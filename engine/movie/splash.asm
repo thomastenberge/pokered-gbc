@@ -98,7 +98,7 @@ AnimateShootingStar:
 	xor a
 	ld [wMoveDownSmallStarsOAMCount], a
 	ld hl, SmallStarsWaveCoordsPointerTable
-	ld c, 6
+	ld c, 4
 .smallStarsLoop
 	ld a, [hli]
 	ld e, a
