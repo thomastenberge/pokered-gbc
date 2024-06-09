@@ -55,15 +55,32 @@ SilphCo5F_SetUnlockedSilphCoDoorsScript:
 	cp $1
 	jr nz, .unlock_door1
 	SetEventReuseHL EVENT_SILPH_CO_5_UNLOCKED_DOOR1
+	callfar CheckAllCardKeyEvents
+	jp Load5FCheckCardKeyText
 	ret
 .unlock_door1
 	cp $2
 	jr nz, .unlock_door2
 	SetEventAfterBranchReuseHL EVENT_SILPH_CO_5_UNLOCKED_DOOR2, EVENT_SILPH_CO_5_UNLOCKED_DOOR1
-	ret
+	callfar CheckAllCardKeyEvents
+	jp Load5FCheckCardKeyText
 .unlock_door2
 	SetEventAfterBranchReuseHL EVENT_SILPH_CO_5_UNLOCKED_DOOR3, EVENT_SILPH_CO_5_UNLOCKED_DOOR1
+	callfar CheckAllCardKeyEvents
+	jp Load5FCheckCardKeyText
+
+Load5FCheckCardKeyText:
+	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
+	ret z
+	ld a, 12
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
 	ret
+
+SilphCo5Text12:
+	text_asm
+	callfar PrintCardKeyDoneText
+	jp TextScriptEnd
 
 SilphCo5F_ScriptPointers:
 	def_script_pointers
@@ -84,6 +101,7 @@ SilphCo5F_TextPointers:
 	dw_const SilphCo5FPokemonReport1Text, TEXT_SILPHCO5F_POKEMON_REPORT1
 	dw_const SilphCo5FPokemonReport2Text, TEXT_SILPHCO5F_POKEMON_REPORT2
 	dw_const SilphCo5FPokemonReport3Text, TEXT_SILPHCO5F_POKEMON_REPORT3
+	dw SilphCo5Text12
 
 SilphCo5TrainerHeaders:
 	def_trainers 2

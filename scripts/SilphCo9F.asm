@@ -101,22 +101,41 @@ SilphCo9F_SetUnlockedSilphCoDoorsScript:
 	cp $1
 	jr nz, .unlock_door1
 	SetEventReuseHL EVENT_SILPH_CO_9_UNLOCKED_DOOR1
-	ret
+	callfar CheckAllCardKeyEvents
+	jp Load9FCheckCardKeyText
 .unlock_door1
 	cp $2
 	jr nz, .unlock_door2
 	SetEventAfterBranchReuseHL EVENT_SILPH_CO_9_UNLOCKED_DOOR2, EVENT_SILPH_CO_9_UNLOCKED_DOOR1
-	ret
+	callfar CheckAllCardKeyEvents
+	jp Load9FCheckCardKeyText
 .unlock_door2
 	cp $3
 	jr nz, .unlock_door3
 	SetEventAfterBranchReuseHL EVENT_SILPH_CO_9_UNLOCKED_DOOR3, EVENT_SILPH_CO_9_UNLOCKED_DOOR1
-	ret
+	callfar CheckAllCardKeyEvents
+	jp Load9FCheckCardKeyText
 .unlock_door3
 	cp $4
 	ret nz
 	SetEventAfterBranchReuseHL EVENT_SILPH_CO_9_UNLOCKED_DOOR4, EVENT_SILPH_CO_9_UNLOCKED_DOOR1
+	callfar CheckAllCardKeyEvents
+	jp Load9FCheckCardKeyText
+
+
+Load9FCheckCardKeyText:
+	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
+	ret z
+	ld a, 5
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
 	ret
+
+SilphCo9Text5:
+	text_asm
+	callfar PrintCardKeyDoneText
+	jp TextScriptEnd
+
 
 SilphCo9F_ScriptPointers:
 	def_script_pointers
@@ -130,6 +149,7 @@ SilphCo9F_TextPointers:
 	dw_const SilphCo9FRocket1Text,   TEXT_SILPHCO9F_ROCKET1
 	dw_const SilphCo9FScientistText, TEXT_SILPHCO9F_SCIENTIST
 	dw_const SilphCo9FRocket2Text,   TEXT_SILPHCO9F_ROCKET2
+	dw SilphCo9Text5
 
 SilphCo9TrainerHeaders:
 	def_trainers 2

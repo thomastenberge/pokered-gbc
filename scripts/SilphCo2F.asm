@@ -81,10 +81,27 @@ SilphCo2F_UnlockedDoorEventScript:
 	cp $1
 	jr nz, .unlock_door1
 	SetEventReuseHL EVENT_SILPH_CO_2_UNLOCKED_DOOR1
-	ret
+	ld a, 6
+	ldh [hSpriteIndexOrTextID], a
+	callfar CheckAllCardKeyEvents
+	jp Load2FCheckCardKeyText
 .unlock_door1
 	SetEventAfterBranchReuseHL EVENT_SILPH_CO_2_UNLOCKED_DOOR2, EVENT_SILPH_CO_2_UNLOCKED_DOOR1
+	callfar CheckAllCardKeyEvents
+	jp Load2FCheckCardKeyText
+
+Load2FCheckCardKeyText:
+	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
+	ret z
+	ld a, 6
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
 	ret
+
+SilphCo2Text6:
+	text_asm
+	callfar PrintCardKeyDoneText
+	jp TextScriptEnd
 
 SilphCo2F_ScriptPointers:
 	def_script_pointers

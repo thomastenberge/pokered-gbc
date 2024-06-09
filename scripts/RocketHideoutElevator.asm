@@ -66,20 +66,41 @@ RocketHideoutElevator_TextPointers:
 
 RocketHideoutElevatorText:
 	text_asm
+	CheckEvent EVENT_USED_LIFT_KEY
+	jr nz, .startLift
 	ld b, LIFT_KEY
-	call IsItemInBag
+	predef GetIndexOfItemInBag
+	ld a, b
+	cp $FF ; not in bag
 	jr z, .no_key
+	; if we have the LIFT_KEY, remove it from bag and unlock the elevator forever
+	ld [wWhichPokemon], a ; load item index to be removed
+	ld hl, wNumBagItems
+	ld a, 1 ; one item
+	ld [wItemQuantity], a
+	call RemoveItemFromInventory
+	SetEvent EVENT_USED_LIFT_KEY
+    ld a, SFX_SWITCH
+    call PlaySound
+    call WaitForSoundToFinish
+	ld hl, UnlockedElevatorText
+	call PrintText
+.startLift
 	call RocketHideoutElevatorScript
 	ld hl, RocketHideoutElevatorWarpMaps
 	predef DisplayElevatorFloorMenu
 	jr .text_script_end
 .no_key
-	ld hl, .AppearsToNeedKeyText
+	ld hl, AppearsToNeedKeyText
 	call PrintText
 .text_script_end
 	jp TextScriptEnd
 
-.AppearsToNeedKeyText:
+UnlockedElevatorText:
+	text_far _UnlockedElevatorText
+	text_end
+
+AppearsToNeedKeyText:
 	text_far _RocketHideoutElevatorAppearsToNeedKeyText
 	text_waitbutton
 	text_end

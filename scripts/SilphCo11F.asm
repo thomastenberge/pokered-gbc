@@ -68,7 +68,21 @@ SilphCo11FSetUnlockedDoorEventScript:
 	and a
 	ret z
 	SetEvent EVENT_SILPH_CO_11_UNLOCKED_DOOR
+	callfar CheckAllCardKeyEvents
+	jp Load11FCheckCardKeyText
+
+Load11FCheckCardKeyText:
+	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
+	ret z
+	ld a, 7
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
 	ret
+
+SilphCo11Text7:
+	text_asm
+	callfar PrintCardKeyDoneText
+	jp TextScriptEnd
 
 SilphCo11FTeamRocketLeavesScript:
 	ld hl, .HideMissableObjectIDs
@@ -162,6 +176,7 @@ SilphCo11F_ScriptPointers:
 	dw_const SilphCo11FGiovanniBattleFacingScript,  SCRIPT_SILPHCO11F_GIOVANNI_FACING
 	dw_const SilphCo11FGiovanniStartBattleScript,   SCRIPT_SILPHCO11F_GIOVANNI_START_BATTLE
 	dw_const SilphCo11FGiovanniAfterBattleScript,   SCRIPT_SILPHCO11F_GIOVANNI_AFTER_BATTLE
+	dw SilphCo11Text7
 
 SilphCo11FDefaultScript:
 	CheckEvent EVENT_BEAT_SILPH_CO_GIOVANNI

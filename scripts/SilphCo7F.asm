@@ -91,15 +91,33 @@ SilphCo7F_UnlockedDoorEventScript:
 	cp $1
 	jr nz, .unlock_door1
 	SetEventReuseHL EVENT_SILPH_CO_7_UNLOCKED_DOOR1
-	ret
+	callfar CheckAllCardKeyEvents
+	jp Load7FCheckCardKeyText
 .unlock_door1
 	cp $2
 	jr nz, .unlock_door2
 	SetEventAfterBranchReuseHL EVENT_SILPH_CO_7_UNLOCKED_DOOR2, EVENT_SILPH_CO_7_UNLOCKED_DOOR1
-	ret
+	callfar CheckAllCardKeyEvents
+	jp Load7FCheckCardKeyText
 .unlock_door2
 	SetEventAfterBranchReuseHL EVENT_SILPH_CO_7_UNLOCKED_DOOR3, EVENT_SILPH_CO_7_UNLOCKED_DOOR1
+	callfar CheckAllCardKeyEvents
+	jp Load7FCheckCardKeyText
+
+
+Load7FCheckCardKeyText:
+	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
+	ret z
+	ld a, 16
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
 	ret
+
+SilphCo7Text16:
+	text_asm
+	callfar PrintCardKeyDoneText
+	jp TextScriptEnd
+
 
 SilphCo7FSetDefaultScript:
 	xor a
@@ -280,6 +298,7 @@ SilphCo7F_TextPointers:
 	dw_const SilphCo7FRivalWaitedHereText,    TEXT_SILPHCO7F_RIVAL_WAITED_HERE
 	dw_const SilphCo7FRivalDefeatedText,      TEXT_SILPHCO7F_RIVAL_DEFEATED
 	dw_const SilphCo7FRivalGoodLuckToYouText, TEXT_SILPHCO7F_RIVAL_GOOD_LUCK_TO_YOU
+	dw SilphCo7Text16
 
 SilphCo7TrainerHeaders:
 	def_trainers 5
