@@ -387,7 +387,7 @@ StaryuDexEntry:
 	text_end
 
 BlastoiseDexEntry:
-	db "SHELLFISH@"
+	db "SHELL@"
 	db 5,3
 	dw 1890
 	text_far _BlastoiseDexEntry

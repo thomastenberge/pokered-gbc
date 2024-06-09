@@ -58,9 +58,6 @@ _CeladonMartRoofLittleGirlTM48ExplanationText::
 	text_ram wStringBuffer
 	text " contains"
 	line "ROCK SLIDE!"
-
-	para "It can spook the"
-	line "target sometimes!@"
 	text_end
 
 _CeladonMartRoofLittleGirlYayLemonadeText::

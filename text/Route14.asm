@@ -68,10 +68,10 @@ _Route14CooltrainerM4AfterBattleText::
 	done
 
 _Route14CooltrainerM5BattleText::
-	text "Have you heard of"
-	line "the legendary"
-	cont "#MON?"
-	done
+	text "The 3 legendary"
+	line "#MON are said"	
+	cont "to be birds."
+	
 
 _Route14CooltrainerM5EndBattleText::
 	text "Why?"
