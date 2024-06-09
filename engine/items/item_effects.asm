@@ -564,6 +564,7 @@ ItemUseBall:
 	ld hl, ItemUseBallText08
 .printTransferredToPCText
 	call PrintText
+	call PrintRemainingBoxSpacePrompt
 	jr .done
 
 .oldManCaughtMon
@@ -619,6 +620,16 @@ ItemUseBallText07:
 ItemUseBallText08:
 ;"X was transferred to someone's PC"
 	text_far _ItemUseBallText08
+	text_end
+
+NoBoxSlotsLeftText:
+;"0 slots left in Box X! Time to change boxes!"
+	text_far _NoBoxSlotsLeftText
+	text_end
+
+BoxSlotsLeftText:
+;"X slots left in box X"
+	text_far _BoxSlotsLeftText
 	text_end
 
 ItemUseBallText06:
@@ -2937,6 +2948,50 @@ INCLUDE "data/wild/super_rod.asm"
 ItemUseReloadOverworldData:
 	call LoadCurrentMapView
 	jp UpdateSprites
+
+;;;;;;;;;; pureRGBnote: ADDED: text indicating your box is full or how much is left
+PrintRemainingBoxSpacePrompt:
+	call PrintRemainingBoxSpace
+	ld hl, TextScriptPromptButton
+	jp TextCommandProcessor
+
+PrintRemainingBoxSpace:
+	ld hl, wBoxNumString
+	ld a, [wCurrentBoxNum]
+	and %01111111 ; last bit of wCurrentBoxNum is used as a flag and should be ignored
+	inc a ; wCurrentBoxNum starts at 0 but we want 1
+	call Load2DigitNumberBelow20
+	ld a, [wBoxCount]
+	cp MONS_PER_BOX
+	jr nz, .notFullBox
+	ld hl, NoBoxSlotsLeftText
+	call PrintText
+	ret
+.notFullBox
+	ld h, a
+	ld a, MONS_PER_BOX
+	sub h
+	ld hl, w2CharStringBuffer
+	call Load2DigitNumberBelow20
+	ld hl, BoxSlotsLeftText
+	call PrintText
+	ret
+
+Load2DigitNumberBelow20:
+	cp 10
+	jr c, .singleDigit
+	sub 10
+	push af
+	ld a, "1"
+	ld [hli], a
+	pop af
+.singleDigit
+	add NUMBER_CHAR_OFFSET
+	ld [hli], a
+	ld a, "@"
+	ld [hl], a
+	ret
+;;;;;;;;;;
 
 ; creates a list at wBuffer of maps where the mon in [wd11e] can be found.
 ; this is used by the pokedex to display locations the mon can be found on the map.

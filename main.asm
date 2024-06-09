@@ -156,10 +156,7 @@ INCLUDE "engine/events/hidden_objects/bills_house_pc.asm"
 INCLUDE "engine/events/hidden_objects/oaks_lab_email.asm"
 
 
-SECTION "Bill's PC", ROMX
-
-INCLUDE "engine/pokemon/bills_pc.asm"
-
+;SECTION "Bill's PC", ROMX ; PureRGBnote: MOVED: bills pc code was moved to movedCode section
 
 SECTION "Battle Engine 3", ROMX
 
@@ -375,6 +372,9 @@ SECTION "Vending Machine", ROMX
 INCLUDE "engine/events/vending_machine.asm"
 INCLUDE "custom_functions/func_overworld.asm"
 INCLUDE "engine/battle/ghost_marowak_anim.asm"
+INCLUDE "engine/menus/change_box_menu.asm"
+INCLUDE "engine/menus/multi_choice_menu.asm"
+INCLUDE "engine/pokemon/bills_pc.asm"
 
 
 SECTION "Itemfinder 2", ROMX

@@ -1,6 +1,10 @@
 TextScriptEndingText::
 	text_end
 
+TextScriptPromptButton::
+	text_promptbutton
+	text_end
+
 TextScriptEnd::
 	ld hl, TextScriptEndingText
 	ret

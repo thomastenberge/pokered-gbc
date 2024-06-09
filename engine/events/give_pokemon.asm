@@ -35,6 +35,7 @@ _GivePokemon::
 	ld [hl], "@"
 	ld hl, SentToBoxText
 	call PrintText
+	callfar PrintRemainingBoxSpace
 	scf
 	ret
 .boxFull

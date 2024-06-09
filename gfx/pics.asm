@@ -785,6 +785,9 @@ JynxPicFront::        INCBIN "gfx/pokemon/gsfront/jynx.pic"
 JynxPicBack::         INCBIN "gfx/pokemon/gsback/jynxb.pic"
 MarowakPicFront::     INCBIN "gfx/pokemon/gsfront/marowak.pic"
 MarowakPicBack::      INCBIN "gfx/pokemon/gsback/marowakb.pic"
+
+ExtraMenuBorderConnectors:: INCBIN "gfx/font/extra_menu_border_connectors.2bpp"
+FromToChangeBoxPrompt:: INCBIN "gfx/font/from_to_change_box_prompt.2bpp"
 ENDC
 
 IF !GEN_2_GRAPHICS

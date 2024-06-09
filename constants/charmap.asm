@@ -374,6 +374,8 @@
 
 	charmap "ォ", $f4
 
+	DEF NUMBER_CHAR_OFFSET EQU $f6
+
 	charmap "０", $f6
 	charmap "１", $f7
 	charmap "２", $f8

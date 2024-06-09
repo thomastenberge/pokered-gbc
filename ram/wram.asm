@@ -575,11 +575,9 @@ wFilteredBagItemsCount:: db
 ; 0 if the joypad state is not being simulated
 wSimulatedJoypadStatesIndex:: db
 
-; written to but nothing ever reads it
-wUnusedCD39:: db
+wUnusedCD39:: db ; actually used now, by items/item_effects.asm and overworld/movement.asm
 
-; written to but nothing ever reads it
-wUnusedCD3A:: db
+wUnusedCD3A:: db ; actually used now, by home/pathfinding.asm and overworld/movement.asm
 
 ; mask indicating which real button presses can override simulated ones
 ; XXX is it ever not 0?
@@ -588,6 +586,7 @@ wOverrideSimulatedJoypadStatesMask:: db
 	ds 1
 
 ; This union spans 30 bytes.
+; make sure any variable added to this union is written to prior to being read to avoid collisions
 UNION
 wTradedPlayerMonSpecies:: db
 wTradedEnemyMonSpecies:: db
@@ -1417,10 +1416,14 @@ wEndBattleLoseTextPointer:: dw
 	ds 2
 wEndBattleTextRomBank:: db
 
-	ds 1
+UNION
 
+w2CharStringBuffer:: ds 3 ; don't use this buffer during attack animations
+NEXTU
+ds 1
 ; the address _of the address_ of the current subanimation entry
 wSubAnimAddrPtr:: dw
+ENDU
 
 UNION
 ; the address of the current subentry of the current subanimation
@@ -2048,8 +2051,12 @@ wPlayerGender::
 wItemFinderItemDirection::db
 wSawItemFinderText::db
 
+wSum:: ; a temp store for 16 bit values created by addition, used with PrintNumber to display the sum on screen
+
+wTempStore2:: db
+
 ; unused
-	ds 53
+	ds 50
 
 
 wObtainedHiddenItemsFlags:: flag_array MAX_HIDDEN_ITEMS
@@ -2260,7 +2267,7 @@ ENDU
 
 wTrainerHeaderPtr:: dw
 
-	ds 6
+	ds 6 ; unused save file 6 bytes
 
 ; the trainer the player must face after getting a wrong answer in the Cinnabar
 ; gym quiz

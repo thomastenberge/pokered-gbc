@@ -25,11 +25,23 @@ _WhenYouChangeBoxText::
 	cont "will be saved."
 
 	para "Is that okay?"
+	line "Click SKIP to not"
+	cont "be asked again."
 	done
+
+_SkippedForever::
+	text "This question"
+	line "won't show again."
+	prompt
 
 _ChooseABoxText::
 	text "Choose a"
 	line "<PKMN> BOX.@"
+	text_end
+
+_ChooseABoxDataWillSaveText::
+	text "Choose a <PKMN> BOX."
+	line "Game will save.@"
 	text_end
 
 _EvolvedText::
