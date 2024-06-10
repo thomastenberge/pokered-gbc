@@ -12,10 +12,10 @@ Moves:
 ; Characteristics of each move.
 	table_width MOVE_LENGTH, Moves
 	move POUND,        NO_ADDITIONAL_EFFECT,        40, NORMAL,       100, 35
-	move KARATE_CHOP,  NO_ADDITIONAL_EFFECT,        50, NORMAL,       100, 25
+	move KARATE_CHOP,  NO_ADDITIONAL_EFFECT,        50, FIGHTING,     100, 25
 	move DOUBLESLAP,   TWO_TO_FIVE_ATTACKS_EFFECT,  15, NORMAL,        85, 10
-	move COMET_PUNCH,  TWO_TO_FIVE_ATTACKS_EFFECT,  18, NORMAL,        85, 15
-	move MEGA_PUNCH,   NO_ADDITIONAL_EFFECT,        80, NORMAL,        85, 20
+	move COMET_PUNCH,  TWO_TO_FIVE_ATTACKS_EFFECT,  18, FIGHTING,      85, 15
+	move MEGA_PUNCH,   NO_ADDITIONAL_EFFECT,        80, FIGHTING,      85, 20
 	move PAY_DAY,      PAY_DAY_EFFECT,              40, NORMAL,       100, 20
 	move FIRE_PUNCH,   BURN_SIDE_EFFECT1,           75, FIRE,         100, 15
 	move ICE_PUNCH,    FREEZE_SIDE_EFFECT,          75, ICE,          100, 15
@@ -26,7 +26,7 @@ Moves:
 	move RAZOR_WIND,   CHARGE_EFFECT,               80, NORMAL,        75, 10
 	move SWORDS_DANCE, ATTACK_UP2_EFFECT,            0, NORMAL,       100, 30
 	move CUT,          NO_ADDITIONAL_EFFECT,        50, NORMAL,        95, 30
-	move GUST,         NO_ADDITIONAL_EFFECT,        40, NORMAL,       100, 35
+	move GUST,         NO_ADDITIONAL_EFFECT,        40, FLYING,       100, 35
 	move WING_ATTACK,  NO_ADDITIONAL_EFFECT,        35, FLYING,       100, 35
 	move WHIRLWIND,    SWITCH_AND_TELEPORT_EFFECT,   0, NORMAL,        85, 20
 	move FLY,          FLY_EFFECT,                  70, FLYING,        95, 15
@@ -35,7 +35,7 @@ Moves:
 	move VINE_WHIP,    NO_ADDITIONAL_EFFECT,        35, GRASS,        100, 10
 	move STOMP,        FLINCH_SIDE_EFFECT2,         65, NORMAL,       100, 20
 	move DOUBLE_KICK,  ATTACK_TWICE_EFFECT,         30, FIGHTING,     100, 30
-	move MEGA_KICK,    NO_ADDITIONAL_EFFECT,       120, NORMAL,        75,  5
+	move MEGA_KICK,    NO_ADDITIONAL_EFFECT,       120, FIGHTING,      75,  5
 	move JUMP_KICK,    JUMP_KICK_EFFECT,            70, FIGHTING,      95, 25
 	move ROLLING_KICK, FLINCH_SIDE_EFFECT2,         60, FIGHTING,      85, 15
 	move SAND_ATTACK,  ACCURACY_DOWN1_EFFECT,        0, NORMAL,       100, 15
