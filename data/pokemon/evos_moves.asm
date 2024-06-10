@@ -1303,7 +1303,7 @@ FlareonEvosMoves:
 	db 0
 ; Learnset
 	db 27, QUICK_ATTACK
-	db 31, EMBER
+	; db 31, EMBER ; Automatically tries to learn EMBER on evolution
 	db 37, TAIL_WHIP
 	db 40, BITE
 	db 42, LEER
@@ -1317,7 +1317,7 @@ JolteonEvosMoves:
 	db 0
 ; Learnset
 	db 27, QUICK_ATTACK
-	db 31, THUNDERSHOCK
+	; db 31, THUNDERSHOCK ; Automatically tries to learn THUNDERSHOCK on evolution
 	db 37, TAIL_WHIP
 	db 40, THUNDER_WAVE
 	db 42, DOUBLE_KICK
@@ -1331,7 +1331,7 @@ VaporeonEvosMoves:
 	db 0
 ; Learnset
 	db 27, QUICK_ATTACK
-	db 31, WATER_GUN
+	; db 31, WATER_GUN ; Automatically tries to learn WATER_GUN on evolution
 	db 37, TAIL_WHIP
 	db 40, BITE
 	db 42, ACID_ARMOR
