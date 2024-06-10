@@ -221,6 +221,8 @@ ROMX $39
 	org $4000
 	"Party Mon Sprites Gfx 2"
 	"Party Mon Sprites Routines"
+ROMX $40
+	"NPC Sprites 3"
 WRAM0
 	"Audio RAM"
 	org $c100
