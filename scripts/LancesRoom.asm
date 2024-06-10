@@ -62,6 +62,9 @@ LancesRoomDefaultScript:
 	ld a, [wCoordIndex]
 	cp $3  ; Is player standing next to Lance's sprite?
 	jr nc, .notStandingNextToLance
+
+	call .DoFacings	;joenote - correct the facing
+
 	ld a, TEXT_LANCESROOM_LANCE
 	ldh [hSpriteIndexOrTextID], a
 	jp DisplayTextID
@@ -75,6 +78,23 @@ LancesRoomDefaultScript:
 	ld a, SFX_GO_INSIDE
 	call PlaySound
 	jp LanceShowOrHideEntranceBlocks
+
+.DoFacings
+; joenote: Added from PureRGB. When about to fight Lance, he and the player will face each other properly to talk.
+	ld a, [wYCoord]
+	cp 1
+	jr z, .leftOfLance
+	ld a, PLAYER_DIR_UP
+	ld [wPlayerMovingDirection], a
+	ret
+.leftOfLance
+	ld a, PLAYER_DIR_RIGHT
+	ld [wPlayerMovingDirection], a
+	ld a, 1
+	ld [H_SPRITEINDEX], a
+	ld a, SPRITE_FACING_LEFT
+	ld [hSpriteFacingDirection], a
+	jp SetSpriteFacingDirection
 
 LanceTriggerMovementCoords:
 	dbmapcoord  5,  1
