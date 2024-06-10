@@ -174,6 +174,12 @@ ColorNonOverworldSprites::
 	ld a, GRASS
 	jr z, .gotType
 
+	; If the BRN animation is playing, it's always red.
+	ld a, d
+	cp BURN_ANIM
+	ld a, FIRE
+	jr z, .gotType
+
 	; Make stun spore and solarbeam yellow, despite being grass moves
 	ld a, d
 	cp STUN_SPORE
