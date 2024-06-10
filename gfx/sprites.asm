@@ -83,3 +83,5 @@ ErikaSprite::			INCBIN "gfx/sprites/erika.2bpp"
 KogaaltSprite::			INCBIN "gfx/sprites/kogaalt.2bpp"
 SabrinaSprite::			INCBIN "gfx/sprites/sabrina.2bpp"
 BlaineSprite::			INCBIN "gfx/sprites/blaine.2bpp"
+LaprasSprite::			INCBIN "gfx/sprites/lapras.2bpp"
+

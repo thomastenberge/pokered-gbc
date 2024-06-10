@@ -73,6 +73,7 @@ SpriteSheetPointerTable:
 	overworld_sprite KogaaltSprite, 12          ; SPRITE_KOGAALT
 	overworld_sprite SabrinaSprite, 12          ; SPRITE_SABRINA
 	overworld_sprite BlaineSprite, 12           ; SPRITE_BLAINE
+	overworld_sprite LaprasSprite, 12			; SPRITE_LAPRAS
 	overworld_sprite SeelSprite, 12             ; SPRITE_SEEL
 	overworld_sprite PokeBallSprite, 4          ; SPRITE_POKE_BALL
 	overworld_sprite FossilSprite, 4            ; SPRITE_FOSSIL
