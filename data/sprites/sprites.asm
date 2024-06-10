@@ -70,6 +70,7 @@ SpriteSheetPointerTable:
 	overworld_sprite MistySprite, 12            ; SPRITE_MISTY
 	overworld_sprite LtSurgeSprite, 12          ; SPRITE_LTSURGE
 	overworld_sprite ErikaSprite, 12            ; SPRITE_ERIKA
+	overworld_sprite KogaaltSprite, 12          ; SPRITE_KOGAALT
 	overworld_sprite SabrinaSprite, 12          ; SPRITE_SABRINA
 	overworld_sprite BlaineSprite, 12           ; SPRITE_BLAINE
 	overworld_sprite SeelSprite, 12             ; SPRITE_SEEL
