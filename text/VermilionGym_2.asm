@@ -24,7 +24,7 @@ _VermilionGymLTSurgeThunderBadgeInfoText::
 	done
 
 _VermilionGymLTSurgeReceivedTM24Text::
-	text "<PLAYER> received "
+	text "<PLAYER> received"
 	line "@"
 	text_ram wStringBuffer
 	text "!@"

@@ -139,7 +139,7 @@ _ViridianCityOldManYouNeedToWeakenTheTargetText::
 	done
 
 _ViridianCitySignText::
-	text "VIRIDIAN CITY "
+	text "VIRIDIAN CITY"
 	line "The Eternally"
 	cont "Green Paradise"
 	done
