@@ -403,7 +403,18 @@ NEXTU
 wBoostExpByExpAll::
 wUnusedCC5B:: db
 
-	ds 59
+wUnusedD721:: ; d721	;joenote - use to set various wram flags
+	ds 1
+	;bit 0 - player is female trainer if set (reserved for _FPLAYER tagged code)
+	;bit 1 - Gets set when forfeiting a battle
+	;bit 2 - override bit 0 for specific bank switching instances (usually reserved for _FPLAYER tagged code)
+	;bit 3 - if set, the enemy trainer AI will not use intelligent switching
+	;bit 4 - 60fps option flag
+	;bit 5 - obedience level cap
+	;bit 6 - nuzlocke mode activated
+	;bit 7 - not used
+	
+	ds 58
 
 wNPCMovementDirections2:: ds 10
 ; used in Pallet Town scripted movement
