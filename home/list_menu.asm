@@ -66,17 +66,8 @@ DisplayListMenuIDLoop::
 	and a ; is it the Old Man battle?
 	jr z, .notOldManBattle
 .oldManBattle
-	ld a, "▶"
-	ldcoord_a 5, 4 ; place menu cursor in front of first menu entry
-	ld c, 80
-	call DelayFrames
-	xor a
-	ld [wCurrentMenuItem], a
-	hlcoord 5, 4
-	ld a, l
-	ld [wMenuCursorLocation], a
-	ld a, h
-	ld [wMenuCursorLocation + 1], a
+	; we will be in BANK(DisplayBattleMenu) if old man battle so call a new function in that bank to save space in home
+	call OldManListMenuInit
 	jr .buttonAPressed
 .notOldManBattle
 	call LoadGBPal
@@ -128,6 +119,8 @@ DisplayListMenuIDLoop::
 	ld a, [wListMenuID]
 	and a ; PCPOKEMONLISTMENU?
 	jr z, .pokemonList
+	cp CUSTOMLISTMENU
+	jr z, .skipGetName
 	push hl
 	call GetItemPrice
 	pop hl
@@ -158,6 +151,7 @@ DisplayListMenuIDLoop::
 .storeChosenEntry ; store the menu entry that the player chose and return
 	ld de, wcd6d
 	call CopyToStringBuffer
+.skipGetName
 	ld a, CHOSE_MENU_ITEM
 	ld [wMenuExitMethod], a
 	ld a, [wCurrentMenuItem]
@@ -378,9 +372,17 @@ PrintListMenuEntries::
 	jr z, .pokemonPCMenu
 	cp MOVESLISTMENU
 	jr z, .movesMenu
+	cp CUSTOMLISTMENU
+	jr z, .customListMenu
+;;;; code for printing item names
 .itemMenu
 	call GetItemName
 	jr .placeNameString
+;;;;
+.customListMenu
+	call CustomListMenuGetEntryText
+	jr .placeNameString
+;;;; code for printing pokemon names	
 .pokemonPCMenu
 	push hl
 	ld hl, wPartyCount

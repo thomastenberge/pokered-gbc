@@ -875,7 +875,13 @@ wRightGBMonSpecies:: db
 ; bit 6: tried pushing against boulder once (you need to push twice before it will move)
 wFlags_0xcd60:: db
 
-	ds 9
+;;;;;;;;;; PureRGBnote: CHANGED: this previously empty space of 9 bytes was used by new variables
+; new set of flags for things during game
+; bit 0 = set when we're in-game rather than in the main menu before loading a game
+; bit 1 = set when we're using a pokemart menu
+wNewInGameFlags:: db
+
+wListMenuCustomType:: db ; for list menus with custom list entry text rendering methods, which entry text renderer should be used
 
 ; This has overlapping related uses.
 ; When the player tries to use an item or use certain field moves, 0 is stored

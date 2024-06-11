@@ -5,6 +5,7 @@ BankswitchHome::
 	ldh a, [hLoadedROMBank]
 	ld [wBankswitchHomeSavedROMBank], a
 	ld a, [wBankswitchHomeTemp]
+BankswitchCommon:: ; shinpokerednote: audionote: gbcnote: new function jump address from yellow
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	ret
@@ -24,12 +25,12 @@ Bankswitch::
 	ld a, b
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
-	ld bc, .Return
-	push bc
-	jp hl
-.Return
+	call hl_caller
 	pop bc
 	ld a, b
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	ret
+
+hl_caller::
+	jp hl

@@ -110,6 +110,7 @@ PlayerPCDeposit:
 	call IsKeyItem
 	ld a, 1
 	ld [wItemQuantity], a
+	call BackupItemListIndex
 	ld a, [wIsKeyItem]
 	and a
 	jr nz, .next
@@ -118,14 +119,14 @@ PlayerPCDeposit:
 	call PrintText
 	call DisplayChooseQuantityMenu
 	cp $ff
-	jp z, .loop
+	jr z, .restoreItemIndex
 .next
 	ld hl, wNumBoxItems
 	call AddItemToInventory
 	jr c, .roomAvailable
 	ld hl, NoRoomToStoreText
 	call PrintText
-	jp .loop
+	jr z, .restoreItemIndex
 .roomAvailable
 	ld hl, wNumBagItems
 	call RemoveItemFromInventory
@@ -135,6 +136,9 @@ PlayerPCDeposit:
 	call WaitForSoundToFinish
 	ld hl, ItemWasStoredText
 	call PrintText
+	; fall through
+.restoreItemIndex
+	call RestoreItemListIndex
 	jp .loop
 
 PlayerPCWithdraw:
@@ -164,6 +168,7 @@ PlayerPCWithdraw:
 	call IsKeyItem
 	ld a, 1
 	ld [wItemQuantity], a
+	call BackupItemListIndex
 	ld a, [wIsKeyItem]
 	and a
 	jr nz, .next
@@ -172,14 +177,14 @@ PlayerPCWithdraw:
 	call PrintText
 	call DisplayChooseQuantityMenu
 	cp $ff
-	jp z, .loop
+	jp z, .restoreItemIndex
 .next
 	ld hl, wNumBagItems
 	call AddItemToInventory
 	jr c, .roomAvailable
 	ld hl, CantCarryMoreText
 	call PrintText
-	jp .loop
+	jr .restoreItemIndex
 .roomAvailable
 	ld hl, wNumBoxItems
 	call RemoveItemFromInventory
@@ -189,6 +194,9 @@ PlayerPCWithdraw:
 	call WaitForSoundToFinish
 	ld hl, WithdrewItemText
 	call PrintText
+	; fall through
+.restoreItemIndex
+	call RestoreItemListIndex
 	jp .loop
 
 PlayerPCToss:
@@ -222,6 +230,7 @@ PlayerPCToss:
 	pop hl
 	ld a, 1
 	ld [wItemQuantity], a
+	call BackupItemListIndex
 	ld a, [wIsKeyItem]
 	and a
 	jr nz, .next
@@ -235,10 +244,32 @@ PlayerPCToss:
 	call DisplayChooseQuantityMenu
 	pop hl
 	cp $ff
-	jp z, .loop
+	jr z, .restoreItemIndex
 .next
 	call TossItem ; disallows tossing key items
+	; fall through
+.restoreItemIndex
+	call RestoreItemListIndex
 	jp .loop
+
+BackupItemListIndex:
+	pop de ; pop return addesss
+	ld a, [wCurrentMenuItem]
+	push af
+	ld a, [wListScrollOffset]
+	push af
+	push de ; push return address
+	ret
+
+RestoreItemListIndex:
+	pop de ; pop return address
+	; restore item index for the item list
+	pop af
+	ld [wListScrollOffset], a
+	pop af
+	ld [wCurrentMenuItem], a
+	push de ; push return address
+	ret
 
 PlayersPCMenuEntries:
 	db   "WITHDRAW ITEM"

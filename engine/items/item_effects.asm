@@ -2626,6 +2626,10 @@ TossItem_::
 	ld [wd11e], a
 	call GetItemName
 	call CopyToStringBuffer
+;;;;;;;;;; PureRGBnote: ADDED: sound effect when throwing away an item
+	ld a, SFX_TELEPORT_ENTER_2
+	call PlaySound
+;;;;;;;;;;	
 	ld hl, IsItOKToTossItemText
 	call PrintText
 	hlcoord 14, 7

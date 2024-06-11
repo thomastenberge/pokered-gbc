@@ -7350,3 +7350,18 @@ BattleMonPartyAttr:
 	ld bc, wPartyMon2 - wPartyMon1
 	jp AddNTimes
 ENDC
+
+; PureRGBnote: MOVED: moved from list_menu.asm to free up space in home bank
+OldManListMenuInit::
+	ld a, "▶"
+	ldcoord_a 5, 4 ; place menu cursor in front of first menu entry
+	ld c, 80
+	call DelayFrames
+	xor a
+	ld [wCurrentMenuItem], a
+	hlcoord 5, 4
+	ld a, l
+	ld [wMenuCursorLocation], a
+	ld a, h
+	ld [wMenuCursorLocation + 1], a
+	ret

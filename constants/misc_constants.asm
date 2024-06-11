@@ -24,3 +24,8 @@ DEF BIT_DEBUG_MODE EQU 1
 	const WALKING ; 0
 	const BIKING ; 1
 	const SURFING ; 2
+
+; wNewInGameFlags
+	const_def
+	const IN_GAME
+	const IN_POKEMART_MENU
