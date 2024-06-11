@@ -686,8 +686,8 @@ _ViridianBlackboardPrlzText::
 	prompt
 
 _ViridianBlackboardBurnText::
-	text "A burn reduces"
-	line "power and speed."
+	text "A burn halves a"
+	line "#MON's ATTACK."
 	cont "It also causes"
 	cont "ongoing damage."
 
