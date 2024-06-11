@@ -623,7 +623,7 @@ CanWalkOntoTile:
 	ldh a, [hCurrentSpriteOffset]
 	ld l, a
 	ld a, [hl]
-	cp SPRITE_SEEL ; lapras in fuchsia city
+	cp SPRITE_LAPRAS ; lapras in fuchsia city
 	jr z, .skipTileCheck
 .noLaprasCheck
 ;;;;;;;;;;

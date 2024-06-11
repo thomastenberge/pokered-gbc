@@ -1739,6 +1739,8 @@ JoypadOverworld::
 ; so the old value of c is used. 2429 is always called before this function,
 ; and 2429 always sets c to 0xF0. There is no 0xF0 background tile, so it
 ; is considered impassable and it is detected as a collision.
+;;;; PureRGBnote: FIXED: bug was fixed so collision with sprites is routed directly to the collision code, and reuses the code for using the
+;;;; surf item to decide if a surf tile is in front of the player or not instead of duplicating
 CollisionCheckOnWater::
 	ld a, [wd730]
 	bit 7, a
@@ -1747,18 +1749,14 @@ CollisionCheckOnWater::
 	ld d, a
 	ld a, [wSpritePlayerStateData1CollisionData]
 	and d ; check if a sprite is in the direction the player is trying to go
-	jr nz, .checkIfNextTileIsPassable ; bug?
+	jr nz, .collision
 	ld hl, TilePairCollisionsWater
 	call CheckForJumpingAndTilePairCollisions
 	jr c, .collision
 	predef GetTileAndCoordsInFrontOfPlayer ; get tile in front of player (puts it in c and [wTileInFrontOfPlayer])
-	ld a, [wTileInFrontOfPlayer] ; tile in front of player
-	cp $14 ; water tile
-	jr z, .noCollision ; keep surfing if it's a water tile
-	cp $32 ; either the left tile of the S.S. Anne boarding platform or the tile on eastern coastlines (depending on the current tileset)
-	jr z, .checkIfVermilionDockTileset
-	cp $48 ; tile on right on coast lines in Safari Zone
-	jr z, .noCollision ; keep surfing
+	ld d, c ; put the tile in front of the player into d so the callfar after this doesn't affect the register
+	callfar WaterTileSetIsNextTileShoreOrWater
+	jr nc, .noCollision
 ; check if the [land] tile in front of the player is passable
 .checkIfNextTileIsPassable
 ;;;;;;;;;; PureRGBnote: CHANGED: unified code for checking if a tile is passable
@@ -1784,11 +1782,6 @@ CollisionCheckOnWater::
 	call LoadPlayerSpriteGraphics
 	call PlayDefaultMusic
 	jr .noCollision
-.checkIfVermilionDockTileset
-	ld a, [wCurMapTileset] ; tileset
-	cp SHIP_PORT ; Vermilion Dock tileset
-	jr nz, .noCollision ; keep surfing if it's not the boarding platform tile
-	jr .stopSurfing ; if it is the boarding platform tile, stop surfing
 
 ; function to run the current map's script
 RunMapScript::

@@ -688,8 +688,9 @@ ItemUseBicycle:
 ItemUseSurfboard:
 	ld a, [wWalkBikeSurfState]
 	ld [wWalkBikeSurfStateCopy], a
-	cp 2 ; is the player already surfing?
-	jr z, .tryToStopSurfing
+	cp SURFING ; is the player already surfing?
+	jr z, .alreadySurfing ; don't do anything if so ; PureRGBnote: CHANGED: can't use surf to "get back on land", this feature is bugged anyway
+	;jr z, .tryToStopSurfing	
 .tryToSurf
 	call IsNextTileShoreOrWater
 	jp c, SurfingAttemptFailed
@@ -705,43 +706,43 @@ ItemUseSurfboard:
 	call PlayDefaultMusic ; play surfing music
 	ld hl, SurfingGotOnText
 	jp PrintText
-.tryToStopSurfing
-	xor a
-	ldh [hSpriteIndexOrTextID], a
-	ld d, 16 ; talking range in pixels (normal range)
-	call IsSpriteInFrontOfPlayer2
-	res 7, [hl]
-	ldh a, [hSpriteIndexOrTextID]
-	and a ; is there a sprite in the way?
-	jr nz, .cannotStopSurfing
-	ld hl, TilePairCollisionsWater
-	call CheckForTilePairCollisions
-	jr c, .cannotStopSurfing
-	ld hl, wTilesetCollisionPtr ; pointer to list of passable tiles
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a ; hl now points to passable tiles
-	ld a, [wTileInFrontOfPlayer] ; tile in front of the player
-	ld b, a
-.passableTileLoop
-	ld a, [hli]
-	cp b
-	jr z, .stopSurfing
-	cp $ff
-	jr nz, .passableTileLoop
-.cannotStopSurfing
-	ld hl, SurfingNoPlaceToGetOffText
+;.tryToStopSurfing ; PureRGBnote: CHANGED: can't use surf to "get back on land", this feature is bugged anyway - you can get stuck on water by trying to get off while facing right when an NPC is to the right of you
+;	xor a
+;	ldh [hSpriteIndexOrTextID], a
+;	ld d, 16 ; talking range in pixels (normal range)
+;	call IsSpriteInFrontOfPlayer2
+;	res 7, [hl]
+;	ldh a, [hSpriteIndexOrTextID]
+;	and a ; is there a sprite in the way?
+;	jr nz, .cannotStopSurfing
+;	ld hl, TilePairCollisionsWater
+;	call CheckForTilePairCollisions
+;	jr c, .cannotStopSurfing
+;	ld hl, wTilesetCollisionPtr ; pointer to list of passable tiles
+;	ld a, [hli]
+;	ld h, [hl]
+;	ld l, a ; hl now points to passable tiles
+;	ld a, [wTileInFrontOfPlayer] ; tile in front of the player
+;	ld b, a
+;.passableTileLoop
+;	ld a, [hli]
+;	cp b
+;	jr z, .stopSurfing
+;	cp $ff
+;	jr nz, .passableTileLoop
+.alreadySurfing
+	ld hl, AlreadySurfingText
 	jp PrintText
-.stopSurfing
-	call .makePlayerMoveForward
-	ld hl, wd730
-	set 7, [hl]
-	xor a
-	ld [wWalkBikeSurfState], a ; change player state to walking
-	dec a
-	ld [wJoyIgnore], a
-	call PlayDefaultMusic ; play walking music
-	jp LoadWalkingPlayerSpriteGraphics
+;.stopSurfing ; PureRGBnote: CHANGED: can't use surf to "get back on land", this feature is bugged anyway
+;	call .makePlayerMoveForward
+;	ld hl, wd730
+;	set 7, [hl]
+;	xor a
+;	ld [wWalkBikeSurfState], a ; change player state to walking
+;	dec a
+;	ld [wJoyIgnore], a
+;	call PlayDefaultMusic ; play walking music
+;	jp LoadWalkingPlayerSpriteGraphics
 ; uses a simulated button press to make the player move forward
 .makePlayerMoveForward
 	ld a, [wPlayerDirection] ; direction the player is going
@@ -768,8 +769,8 @@ SurfingGotOnText:
 	text_far _SurfingGotOnText
 	text_end
 
-SurfingNoPlaceToGetOffText:
-	text_far _SurfingNoPlaceToGetOffText
+AlreadySurfingText:
+	text_far _AlreadySurfingText
 	text_end
 
 ItemUsePokedex:
@@ -2878,21 +2879,26 @@ SendNewMonToBox:
 ; checks if the tile in front of the player is a shore or water tile
 ; used for surfing and fishing
 ; unsets carry if it is, sets carry if not
-IsNextTileShoreOrWater:
+IsNextTileShoreOrWater::
 	ld a, [wCurMapTileset]
 	ld hl, WaterTilesets
 	ld de, 1
 	call IsInArray
-	jr nc, .notShoreOrWater
+	jr nc, WaterTileSetIsNextTileShoreOrWater.notShoreOrWater
+	; fall through
+WaterTileSetIsNextTileShoreOrWater::
 	ld a, [wCurMapTileset]
 	cp SHIP_PORT ; Vermilion Dock tileset
-	ld a, [wTileInFrontOfPlayer] ; tile in front of player
 	jr z, .skipShoreTiles ; if it's the Vermilion Dock tileset
+	cp CAVERN ; PureRGBnote: ADDED: fixes an issue with the unused tiles in the cavern tileset causing surf incorrectly (they are used now)
+	jr z, .skipShoreTiles
+	ld a, [wTileInFrontOfPlayer] ; tile in front of player
 	cp $48 ; eastern shore tile in Safari Zone
 	jr z, .shoreOrWater
 	cp $32 ; usual eastern shore tile
 	jr z, .shoreOrWater
 .skipShoreTiles
+	ld a, [wTileInFrontOfPlayer] ; tile in front of player
 	cp $14 ; water tile
 	jr z, .shoreOrWater
 .notShoreOrWater

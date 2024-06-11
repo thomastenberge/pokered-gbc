@@ -19,3 +19,8 @@ DEF TEXT_DELAY_SLOW   EQU %101 ; 5
 
 ; wd732 flags
 DEF BIT_DEBUG_MODE EQU 1
+
+	const_def
+	const WALKING ; 0
+	const BIKING ; 1
+	const SURFING ; 2
