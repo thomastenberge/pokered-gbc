@@ -137,7 +137,7 @@ _OaksAideHereYouGoText::
 	text "Great! You have"
 	line "caught @"
 	text_decimal hOaksAideNumMonsOwned, 1, 3
-	text " kinds "
+	text " kinds"
 	cont "of #MON!"
 	cont "Congratulations!"
 
