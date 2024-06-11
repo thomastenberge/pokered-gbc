@@ -80,13 +80,25 @@ OverworldLoopLessDelay::
 	jp .displayDialogue
 .startButtonNotPressed
 	bit BIT_A_BUTTON, a
+	jr nz, .AorSelectPressed	; added from shinpokered for auto HM use
+	bit 2, a	; Select button ; added from shinpokered for auto HM use
 	jp z, .checkIfDownButtonIsPressed
-; if A is pressed
+; if A or SELECT is pressed
+.AorSelectPressed
 	ld a, [wd730]
 	bit 2, a
 	jp nz, .noDirectionButtonsPressed
 	call IsPlayerCharacterBeingControlledByGame
 	jr nz, .checkForOpponent
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;joenote - for smart HM use
+	ld a, [hJoyPressed]
+	bit 2, a	;is Select being pressed?
+	jr z, .notselect
+	callba CheckForSmartHMuse	;this function jumps back to OverworldLoop on completion
+	jp OverworldLoop
+.notselect
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	call CheckForHiddenObjectOrBookshelfOrCardKeyDoor
 	ldh a, [hItemAlreadyFound]
 	and a
@@ -112,16 +124,7 @@ OverworldLoopLessDelay::
 	dec a
 	ld a, 0
 	ld [wEnteringCableClub], a
-	jr z, .changeMap
-; XXX can this code be reached?
-	predef LoadSAV
-	ld a, [wCurMap]
-	ld [wDestinationMap], a
-	call PrepareForSpecialWarp
-	ld a, [wCurMap]
-	call SwitchToMapRomBank ; switch to the ROM bank of the current map
-	ld hl, wCurMapTileset
-	set 7, [hl]
+	jr z, .changeMap ;this only jumps if the previous dec a reduces a to 0
 .changeMap
 	jp EnterMap
 .checkForOpponent

@@ -32,6 +32,310 @@ IsSpinArrow:
 	ld[wUnusedD119], a
 	ret
 
+;joenote - allows for using HMs on the overworld with just a button press
+CheckForSmartHMuse::
+	callba GetTileAndCoordsInFrontOfPlayer
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;check for cut
+	ld a, [wObtainedBadges]
+	bit 1, a ; does the player have the Cascade Badge?
+	jr z, .nocut
+	;does a party 'mon have CUT?
+	ld c, CUT
+	call PartyMoveTest
+	jr z, .nocut
+	callba CheckCutTile
+	jr nz, .nocut
+	jr .canCut
+.canCut
+	ld a, $ff
+	ld [wUpdateSpritesEnabled], a
+	callba InitCutAnimOAM
+	ld de, CutTreeBlockSwaps
+	callba ReplaceTreeTileBlock
+	callba RedrawMapView
+	callba AnimCut
+	ld a, $1
+	ld [wUpdateSpritesEnabled], a
+	ld a, SFX_CUT
+	call PlaySound
+	ld a, $90
+	ld [hWY], a
+	call UpdateSprites
+	callba RedrawMapView
+	jp .return
+.nocut
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+;check for surfing
+	ld a, [wObtainedBadges]
+	bit 4, a ; does the player have the Soul Badge?
+	jp z, .nosurf
+	ld a, [wWalkBikeSurfState]
+	ld [wWalkBikeSurfStateCopy], a
+	cp 2 ; is the player already surfing?
+	jp z, .nosurf	
+	;surfing not allowed if forced to ride bike
+	ld a, [wd732]
+	bit 5, a
+	jr nz, .nosurf
+	;load a 1 into wActionResultOrTookBattleTurn as a marker that we are checking surf from this function
+	ld a, $01  
+	ld [wActionResultOrTookBattleTurn], a
+	callba IsSurfingAllowed
+	xor a
+	ld [wActionResultOrTookBattleTurn], a
+	;now check bit to see of surfing allowed
+	ld hl, wd728
+	bit 1, [hl]
+	res 1, [hl]
+	jp z, .nosurf
+	callba IsNextTileShoreOrWater	;unsets carry if player is facing water or shore
+	jr c, .nosurf
+	ld hl, TilePairCollisionsWater
+	call CheckForTilePairCollisions
+	jr c, .nosurf
+	xor a
+	ld [hSpriteIndexOrTextID], a
+	call IsSpriteInFrontOfPlayer	; check with talking range in pixels (normal range of $10)
+	res 7, [hl]
+	ld a, [hSpriteIndexOrTextID]
+	and a ; is there a sprite in the way?
+	jr nz, .nosurf
+	;is the surfboard in the bag?
+	ld b, SURFBOARD
+	call IsItemInBag
+	jr nz, .beginsurfing
+	;check if a party member has surf
+	ld c, SURF
+	call PartyMoveTest
+	jp z, .nosurf
+.beginsurfing
+	;we can now initiate surfing
+	ld hl, wd730
+	set 7, [hl]
+	ld a, 2
+	ld [wWalkBikeSurfState], a ; change player state to surfing
+	;update sprites
+	call LoadPlayerSpriteGraphics
+	call PlayDefaultMusic ; play surfing music
+	;move player forward
+	ld a, [wPlayerDirection] ; direction the player is going
+	bit PLAYER_DIR_BIT_UP, a
+	ld b, D_UP
+	jr nz, .storeSimulatedButtonPress
+	bit PLAYER_DIR_BIT_DOWN, a
+	ld b, D_DOWN
+	jr nz, .storeSimulatedButtonPress
+	bit PLAYER_DIR_BIT_LEFT, a
+	ld b, D_LEFT
+	jr nz, .storeSimulatedButtonPress
+	ld b, D_RIGHT
+.storeSimulatedButtonPress
+	ld a, b
+	ld [wSimulatedJoypadStatesEnd], a
+	ld a, 1
+	ld [wSimulatedJoypadStatesIndex], a
+	jp .return
+.nosurf
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;check for flash
+	ld a, [wObtainedBadges]
+	bit 0, a ; does the player have the Boulder Badge?
+	jr z, .noflash
+	;check if the map pal offset is not zero
+	ld a, [wMapPalOffset]
+	and a 
+	jr z, .noflash
+	;check if a party member has strength
+	ld c, FLASH
+	call PartyMoveTest
+	jr z, .noflash
+	;restore the map pal offset to brighten it up
+	xor a
+	ld [wMapPalOffset], a
+	jp .return
+.noflash
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;else check for strength and enable it
+	ld a, [wd728]
+	bit 0, a ;check the usingStrength bit
+	jr nz, .nostrength	;do nothing if already active
+
+	ld a, [wObtainedBadges]
+	bit 3, a ; does the player have the Rainbow Badge?
+	jr z, .nostrength
+
+	;must be facing a boulder to use strength
+	push hl
+	push bc
+	push de
+	xor a
+	ld [hSpriteIndexOrTextID], a
+	call IsSpriteInFrontOfPlayer
+	pop de
+	pop bc
+	pop hl
+	ld a, [hSpriteIndexOrTextID]
+	and a
+	jr z, .nostrength
+	push hl
+	push bc
+	push de
+	ld hl, wSpriteStateData1 + 1
+	ld d, $0
+	ld a, [hSpriteIndexOrTextID]
+	swap a
+	ld e, a
+	add hl, de
+	res 7, [hl]
+	call GetSpriteMovementByte2Pointer
+	ld a, [hl]
+	cp BOULDER_MOVEMENT_BYTE_2
+	pop de
+	pop bc
+	pop hl
+	jr nz, .nostrength
+
+	;check if a party member has strength
+	ld c, STRENGTH
+	call PartyMoveTest
+	jr z, .nostrength
+	
+	;Play cry of the 'mon that has strength to signify its activation as well as a visual cue
+	push hl
+	push bc
+	push af
+	predef ChangeBGPalColor0_4Frames
+	pop af
+	ld bc, wPartyMon2 - wPartyMon1
+	ld hl, wPartyMon1Species
+	call AddNTimes
+	ld a, [hl]
+	call PlayCry
+	call WaitForSoundToFinish
+	pop bc
+	pop hl
+	
+	;set the usingStrength bit
+	ld a, [wd728]
+	set 0, a
+	ld [wd728], a
+	jp .return
+.nostrength
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+.return
+	ret
+	
+
+;Check if any pokemon in the party has a certain move
+;move ID should be in 'c'
+;set zero flag if move not found
+;clear zero flag if move found
+;if move found, return party position in A (zero offset)
+PartyMoveTest:
+	ld a, [wPartyCount]
+	and a
+	ret z	;treat as not finding a move is the party count is 0
+	
+	push de
+	push hl
+	push bc
+	ld b, a	;B will track the loops for party members
+.loop	
+	ld a, b
+	dec a
+	ld d, a
+	ld hl, wPartyMon1Moves
+	push bc
+	ld bc, wPartyMon2Moves - wPartyMon1Moves
+	call AddNTimes
+	pop bc
+	
+	push bc
+	ld b, NUM_MOVES
+.loop2
+	ld a, [hli]
+	cp c
+	jr z, .loop2exit
+	dec b
+	jr nz, .loop2
+	
+.loop2exit
+	cp c
+	pop bc
+	ld a, d
+	jr z, .return_nz
+
+	dec b
+	jr nz, .loop
+	jr .return
+.return_nz
+	ld b, 0
+	inc b
+.return
+	pop bc
+	pop hl
+	pop de
+	ret
+
+;this function handles quick-use of fishing and biking by piggy-backing off the CheckForSmartHMuse function
+CheckForRodBike:
+	callba IsNextTileShoreOrWater	;unsets carry if player is facing water or shore
+	jr c, .nofishing
+	ld hl, TilePairCollisionsWater
+	call CheckForTilePairCollisions
+	jr c, .nofishing
+	;are rods in the bag?
+	ld b, SUPER_ROD
+	push bc
+	call IsItemInBag
+	pop bc
+	jr nz, .start
+	ld b, GOOD_ROD
+	push bc
+	call IsItemInBag
+	pop bc
+	jr nz, .start
+	ld b, OLD_ROD
+	push bc
+	call IsItemInBag
+	pop bc
+	jr nz, .start
+
+.nofishing
+	;do nothing if forced to ride bike
+	ld a, [wd732]
+	bit 5, a
+	ret nz
+	;else check if bike is in bag
+	ld b, BICYCLE
+	push bc
+	call IsItemInBag
+	pop bc
+	jr z, .return
+
+.start
+	push bc
+	;initialize a text box without drawing anything special
+	ld a, 1
+	ld [wAutoTextBoxDrawingControl], a
+	callba DisplayTextIDInit
+	pop bc
+
+	;determine item to use
+	ld a, b
+	ld [wcf91], a	;load item to be used
+	ld [wd11e], a	;load item so its name can be grabbed
+	call GetItemName	;get the item name into de register
+	call CopyToStringBuffer ; copy name from de to wcf4b so it shows up in text
+	call UseItem	;use the item
+
+	;use $ff value loaded into hSpriteIndexOrTextID to make DisplayTextID display nothing and close any text
+	ld a, $FF
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+.return
+	ret
 
 ;***************************************************************************************************
 ;these functions have been moved here from overworld.asm 

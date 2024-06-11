@@ -1,22 +1,28 @@
 UsedCut:
 	xor a
 	ld [wActionResultOrTookBattleTurn], a ; initialise to failure value
-	ld a, [wCurMapTileset]
-	and a ; OVERWORLD
-	jr z, .overworld
-	cp GYM
+	
+	;joenote - done with a function call to consolidate cuttable tiles to one spot
+	call CheckCutTile
 	jr nz, .nothingToCut
-	ld a, [wTileInFrontOfPlayer]
-	cp $50 ; gym cut tree
-	jr nz, .nothingToCut
-	jr .canCut
-.overworld
-	dec a
-	ld a, [wTileInFrontOfPlayer]
-	cp $3d ; cut tree
-	jr z, .canCut
-	cp $52 ; grass
-	jr z, .canCut
+	jr .canCut	
+	
+;	ld a, [wCurMapTileset]
+;	and a ; OVERWORLD
+;	jr z, .overworld
+;	cp GYM
+;	jr nz, .nothingToCut
+;	ld a, [wTileInFrontOfPlayer]
+;	cp $50 ; gym cut tree
+;	jr nz, .nothingToCut
+;	jr .canCut
+;.overworld
+;	dec a
+;	ld a, [wTileInFrontOfPlayer]
+;	cp $3d ; cut tree
+;	jr z, .canCut
+;	cp $52 ; grass
+;	jr z, .canCut
 .nothingToCut
 	ld hl, .NothingToCutText
 	jp PrintText
@@ -26,7 +32,7 @@ UsedCut:
 	text_end
 
 .canCut
-	ld [wCutTile], a
+;	ld [wCutTile], a
 	ld a, 1
 	ld [wActionResultOrTookBattleTurn], a ; used cut
 	ld a, [wWhichPokemon]
@@ -67,6 +73,36 @@ UsedCut:
 	call UpdateSprites
 	jp RedrawMapView
 
+CheckCutTile:	;joenote - consolidate this into its own function
+	ld a, [wCurMapTileset]
+	cp OVERWORLD
+	jr z, .overworld
+	cp GYM
+	jr z, .gym
+	cp PLATEAU	;added plateau
+	jr z, .plateau
+	ret	;nz if not one of the listed tilesets
+.gym
+	ld a, [wTileInFrontOfPlayer]
+	cp $50 ; gym cut tree
+	jr z, .loadCutTile
+	ret	;nz if not a cuttable tile
+.plateau
+	ld a, [wTileInFrontOfPlayer]
+	cp $45 ; grass
+	jr z, .loadCutTile
+	ret	;nz if not a cuttable tile
+.overworld
+	ld a, [wTileInFrontOfPlayer]
+	cp $3d ; cut tree
+	jr z, .loadCutTile
+	cp $52 ; grass
+	jr z, .loadCutTile
+	ret	;nz if not a cuttable tile
+.loadCutTile
+	ld [wCutTile], a
+	ret	;z already set at this return
+
 UsedCutText:
 	text_far _UsedCutText
 	text_end
@@ -78,6 +114,8 @@ InitCutAnimOAM:
 	ldh [rOBP1], a
 	ld a, [wCutTile]
 	cp $52
+	jr z, .grass
+	cp $45	;joenote - added plateau grass
 	jr z, .grass
 ; tree
 	ld de, Overworld_GFX tile $2d ; cuttable tree sprite top row
