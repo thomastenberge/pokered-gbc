@@ -33,8 +33,7 @@ SilphCo6F_UnlockedDoorEventScript:
 	ret z
 	SetEvent EVENT_SILPH_CO_6_UNLOCKED_DOOR
 	callfar CheckAllCardKeyEvents
-	jp Load6FCheckCardKeyText
-
+	; fall through
 Load6FCheckCardKeyText:
 	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
 	ret z
