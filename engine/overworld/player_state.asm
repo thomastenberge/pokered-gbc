@@ -345,16 +345,15 @@ GetTileTwoStepsInFrontOfPlayer:
 
 CheckForCollisionWhenPushingBoulder:
 	call GetTileTwoStepsInFrontOfPlayer
-	ld hl, wTilesetCollisionPtr
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-.loop
-	ld a, [hli]
-	cp $ff
-	jr z, .done ; if the tile two steps ahead is not passable
-	cp c
-	jr nz, .loop
+;;;;;;;;;; PureRGBnote: CHANGED: unified code for checking if a tile is passable
+	push bc
+	push de
+	ld d, c
+	callfar _CheckTilePassable
+	pop de
+	pop bc
+	jr c, .done ; not passable
+;;;;;;;;;;
 	ld hl, TilePairCollisionsLand
 	call CheckForTilePairCollisions2
 	ld a, $ff
@@ -362,8 +361,7 @@ CheckForCollisionWhenPushingBoulder:
 	ld a, [wTileInFrontOfBoulderAndBoulderCollisionResult]
 	cp $15 ; stairs tile
 	ld a, $ff
-	jr z, .done ; if the tile two steps ahead is stairs
-	call CheckForBoulderCollisionWithSprites
+	call nz, CheckForBoulderCollisionWithSprites ; if the tile two steps ahead isn't stairs
 .done
 	ld [wTileInFrontOfBoulderAndBoulderCollisionResult], a
 	ret

@@ -627,17 +627,16 @@ CanWalkOntoTile:
 	jr z, .skipTileCheck
 .noLaprasCheck
 ;;;;;;;;;;
+;;;;;;;;;; PureRGBnote: CHANGED: unified code for checking if a tile is passable
+	push bc
+	push de
+	ld d, c
+	callfar _CheckTilePassable
+	pop de
+	pop bc
+	jr c, .impassable
+;;;;;;;;;;
 .skipTileCheck
-	ld a, [wTilesetCollisionPtr]
-	ld l, a
-	ld a, [wTilesetCollisionPtr+1]
-	ld h, a
-.tilePassableLoop
-	ld a, [hli]
-	cp $ff
-	jr z, .impassable
-	cp c
-	jr nz, .tilePassableLoop
 	ld h, HIGH(wSpriteStateData2)
 	ldh a, [hCurrentSpriteOffset]
 	add $6

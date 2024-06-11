@@ -457,8 +457,8 @@ WarpFound2::
 ; this is for handling "outside" maps that can't have the 0xFF destination map
 	ld a, [wCurMap]
 	ld [wLastMap], a
-	ld a, [wCurMapWidth]
-	ld [wUnusedD366], a ; not read
+	; ld a, [wCurMapWidth]
+	; ld [wUnusedD366], a ; not read
 	ldh a, [hWarpDestinationMap]
 	ld [wCurMap], a
 	cp ROCK_TUNNEL_1F
@@ -1114,19 +1114,14 @@ CollisionCheckOnLand::
 CheckTilePassable::
 	predef GetTileAndCoordsInFrontOfPlayer ; get tile in front of player
 	ld a, [wTileInFrontOfPlayer] ; tile in front of player
-	ld c, a
-	ld hl, wTilesetCollisionPtr ; pointer to list of passable tiles
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a ; hl now points to passable tiles
-.loop
-	ld a, [hli]
-	cp $ff
-	jr z, .tileNotPassable
-	cp c
-	ret z
-	jr .loop
-.tileNotPassable
+;;;;;;;;;; PureRGBnote: CHANGED: unified code for checking if a tile is passable
+	ld d, a
+	callfar _CheckTilePassable
+	jr c, .notPassable
+	and a
+	ret
+.notPassable
+;;;;;;;;;;
 	scf
 	ret
 
@@ -1766,17 +1761,10 @@ CollisionCheckOnWater::
 	jr z, .noCollision ; keep surfing
 ; check if the [land] tile in front of the player is passable
 .checkIfNextTileIsPassable
-	ld hl, wTilesetCollisionPtr ; pointer to list of passable tiles
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-.loop
-	ld a, [hli]
-	cp $ff
-	jr z, .collision
-	cp c
-	jr z, .stopSurfing ; stop surfing if the tile is passable
-	jr .loop
+;;;;;;;;;; PureRGBnote: CHANGED: unified code for checking if a tile is passable
+	callfar _CheckTilePassable
+	jr nc, .stopSurfing
+;;;;;;;;;;
 .collision
 	ld a, [wChannelSoundIDs + CHAN5]
 	cp SFX_COLLISION ; check if collision sound is already playing
