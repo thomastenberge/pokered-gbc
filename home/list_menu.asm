@@ -52,6 +52,11 @@ DisplayListMenuID::
 	ld [wTopMenuItemX], a
 	ld a, A_BUTTON | B_BUTTON | SELECT
 	ld [wMenuWatchedKeys], a
+	ld a, [wBattleType]
+	and a ; is it the Old Man battle?
+	jr nz, .skipOffsetCheck
+	call CheckBadOffset
+.skipOffsetCheck
 	ld c, 10
 	call DelayFrames
 
