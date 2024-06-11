@@ -282,7 +282,7 @@ NidokingEvosMoves:
 	db 8, HORN_ATTACK
 	db 14, POISON_STING
 	db 23, THRASH
-	db 25, FOCUS_ENERGY
+	db 23, FOCUS_ENERGY
 	db 32, FURY_ATTACK
 	db 41, HORN_DRILL
 	db 50, DOUBLE_KICK
@@ -321,7 +321,7 @@ ExeggutorEvosMoves:
 ; Learnset
 	db 25, REFLECT
 	db 28, STOMP
-	db 30, LEECH_SEED
+	db 28, LEECH_SEED
 	db 32, STUN_SPORE
 	db 37, POISONPOWDER
 	db 42, SOLARBEAM
@@ -393,7 +393,7 @@ NidoqueenEvosMoves:
 	db 8, SCRATCH
 	db 14, POISON_STING
 	db 23, BODY_SLAM
-	db 25, TAIL_WHIP
+	db 23, TAIL_WHIP
 	db 32, BITE
 	db 41, FURY_SWIPES
 	db 50, DOUBLE_KICK
@@ -1673,7 +1673,7 @@ CloysterEvosMoves:
 	db 30, AURORA_BEAM
 	db 39, LEER
 	db 50, SPIKE_CANNON
-	db 51, ICE_BEAM
+	db 50, ICE_BEAM
 	db 0
 
 MissingNo8CEvosMoves:
