@@ -1422,10 +1422,10 @@ WeedleEvosMoves:
 
 KakunaEvosMoves:
 ; Evolutions
-	db 7, HARDEN
 	db EVOLVE_LEVEL, 10, BEEDRILL
 	db 0
 ; Learnset
+	db 7, HARDEN
 	db 0
 
 BeedrillEvosMoves:
@@ -1433,7 +1433,7 @@ BeedrillEvosMoves:
 	db 0
 ; Learnset
 	db 12, FURY_ATTACK
-	db 16, FOCUS_ENERGY
+	db 12, FOCUS_ENERGY
 	db 20, TWINEEDLE
 	db 25, RAGE
 	db 30, PIN_MISSILE
@@ -1524,10 +1524,10 @@ CaterpieEvosMoves:
 
 MetapodEvosMoves:
 ; Evolutions
-	db 7, HARDEN
 	db EVOLVE_LEVEL, 10, BUTTERFREE
 	db 0
 ; Learnset
+	db 7, HARDEN
 	db 0
 
 ButterfreeEvosMoves:

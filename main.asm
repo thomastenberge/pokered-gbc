@@ -376,6 +376,7 @@ INCLUDE "engine/menus/change_box_menu.asm"
 INCLUDE "engine/menus/multi_choice_menu.asm"
 INCLUDE "engine/pokemon/bills_pc.asm"
 INCLUDE "engine/overworld/use_another_repel.asm"
+INCLUDE "engine/battle/store_pkmn_levels.asm"
 
 
 SECTION "Itemfinder 2", ROMX

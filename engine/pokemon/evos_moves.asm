@@ -20,6 +20,11 @@ EvolutionAfterBattle:
 	push hl
 	push bc
 	push de
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; shinpokerednote: FIXED: We keep a pointer to the current PKMN's Level at the Beginning of the Battle. Helps fix the evolution move learn skip bug.
+	ld hl, wStartBattleLevels
+	push hl
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
 	ld hl, wPartyCount
 	push hl
 
@@ -27,11 +32,20 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld hl, wWhichPokemon
 	inc [hl]
 	pop hl
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; shinpokerednote: FIXED: We store current PKMN' Level at the Beginning of the Battle
+; to a chosen memory address in order to be compared later with the evolution requirements.
+	pop de
+	ld a, [de]
+	ld [wTempFlag0], a
+	inc de
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
 	inc hl
 	ld a, [hl]
 	cp $ff ; have we reached the end of the party?
 	jp z, .done
 	ld [wEvoOldSpecies], a
+	push de; shinpokerednote: FIXED If we are not done we need to push the pointer for the next iteration. (next index of wStartBattleLevels)
 	push hl
 	ld a, [wWhichPokemon]
 	ld c, a
@@ -93,9 +107,15 @@ Evolution_PartyMonLoop: ; loop over party mons
 	jp c, Evolution_PartyMonLoop ; if so, go the next mon
 	jr .doEvolution
 .checkItemEvo
+;;;;;;;;;; shinpokerednote: FIXED: skip checking stone evolutions if in battle to avoid the exploit with species numbers allowing stone evolution after battle.
+	ld a, [wIsInBattle] 
+	and a
+	ld a, [hli]
+	jp nz, .nextEvoEntry1
+;;;;;;;;;;
 	ld a, [hli]
 	ld b, a ; evolution item
-	ld a, [wcf91] ; this is supposed to be the last item used, but it is also used to hold species numbers
+	ld a, [wcf91] ; this is supposed to be the last item used, but it is also used to hold species numbers. *fixed above*
 	cp b ; was the evolution item in this entry used?
 	jp nz, .nextEvoEntry1 ; if not, go to the next evolution entry
 .checkLevel
@@ -108,6 +128,14 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld [wCurEnemyLVL], a
 	ld a, 1
 	ld [wEvolutionOccurred], a
+;;;;;;;;;; shinpokerednote: FIXED: skipping evolution learned moves if levelled up a non-evolved pokemon multiple times then evolving
+	ld a, [wTempFlag0]
+	cp b
+	jp nc, .evoLevelRequirementSatisfied
+	ld a, b
+	ld [wTempFlag0], a
+.evoLevelRequirementSatisfied
+;;;;;;;;;;	
 	push hl
 	ld a, [hl]
 	ld [wEvoNewSpecies], a
@@ -206,10 +234,36 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wd0b5]
 	ld [wd11e], a
 	xor a
-	ld [wMonDataLocation], a
-.learnMoveEevee	
-	call EeveelutionForceLearnMove ; FIXED: Force eeveelutions to learn a move on evolution	
+	ld [wMonDataLocation], a	
+	call EeveelutionForceLearnMove ; FIXED: Force eeveelutions to learn a move on evolution
+;;;;;;;;;; shinpokerednote: FIXED: fixing skip move-learn on level-up evolution
+	ld a, [wIsInBattle]
+	and a
+	jr z, .notinbattle
+	push bc
+	
+	ld a, [wCurEnemyLVL]	; load the final level into a.
+	ld c, a	; load the final level to over to c
+	ld a, [wTempFlag0]	; load the evolution level into a
+	ld b, a	; load the evolution level over to b
+	dec b
+.inc_level	; marker for looping back 
+	inc b	;increment 	the current evolution level
+	ld a, b	;put the evolution level in a
+	ld [wCurEnemyLVL], a	;and reset the final level to the evolution level
+	push bc	;save b & c on the stack as they hold the currently tracked evolution level a true final level
 	call LearnMoveFromLevelUp
+	pop bc	;get the current evolution and final level values back from the stack
+	ld a, b	;load the current evolution level into a
+	cp c	;compare it with the final level
+	jr nz, .inc_level	;loop back again if final level has not been reached
+	
+	pop bc
+	jr .skipfix_end
+.notinbattle
+	call LearnMoveFromLevelUp
+.skipfix_end
+;;;;;;;;;;
 	pop hl
 	predef SetPartyMonTypes
 	ld a, [wIsInBattle]
@@ -319,6 +373,7 @@ Evolution_ReloadTilesetTilePatterns:
 	ret z
 	jp ReloadTilesetTilePatterns
 
+; shinpokerednote: FIXED: supports learning multiple moves at the same level
 LearnMoveFromLevelUp:
 	ld hl, EvosMovesPointerTable
 	ld a, [wd11e] ; species
@@ -346,6 +401,10 @@ LearnMoveFromLevelUp:
 	cp b ; is the move learnt at the mon's current level?
 	ld a, [hli] ; move ID
 	jr nz, .learnSetLoop
+
+;the move can indeed be learned at this level
+.confirmlearnmove
+	push hl	
 	ld d, a ; ID of move to learn
 	ld a, [wMonDataLocation]
 	and a
@@ -363,7 +422,7 @@ LearnMoveFromLevelUp:
 .checkCurrentMovesLoop ; check if the move to learn is already known
 	ld a, [hli]
 	cp d
-	jr z, .done ; if already known, jump
+	jr z, .movesloop_done ; if already known, jump
 	dec b
 	jr nz, .checkCurrentMovesLoop
 	ld a, d
@@ -372,12 +431,15 @@ LearnMoveFromLevelUp:
 	call GetMoveName
 	call CopyToStringBuffer
 	predef LearnMove
+.movesloop_done
+	pop hl
+	jr .learnSetLoop
 .done
 	ld a, [wcf91]
 	ld [wd11e], a
 	ret
 
-; used to force the Eeveelutions to learn a specific move on evolution so this move cannot be missed
+; PureRGBnote: ADDED: used to force the Eeveelutions to learn a specific move on evolution so this move cannot be missed
 EeveelutionForceLearnMove:
 	push bc
 	ld a, [wd11e] ; species
