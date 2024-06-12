@@ -1290,7 +1290,7 @@ ItemUseMedicine:
 	ld a, [wcf91]
 	cp RARE_CANDY
 	jp z, .useRareCandy
-	push hl
+	push hl		;push wPartyMonX
 	sub HP_UP
 	add a
 	ld bc, wPartyMon1HPExp - wPartyMon1
@@ -1310,7 +1310,7 @@ ItemUseMedicine:
 	ld a, 255
 .noCarry3
 	ld [hl], a
-	pop hl
+	pop hl		;pop wPartyMonX
 	call .recalculateStats
 	ld hl, VitaminStats
 	ld a, [wcf91]
@@ -1335,12 +1335,24 @@ ItemUseMedicine:
 	ld hl, VitaminStatRoseText
 	call PrintText
 	jp RemoveUsedItem
+
 .vitaminNoEffect
-	pop hl
+	pop hl	;pop wPartyMonX
 	ld hl, VitaminNoEffectText
 	call PrintText
 	jp GBPalWhiteOut
+
 .recalculateStats
+	push hl		;push wPartyMonX
+	ld bc, wPartyMon1MaxHP - wPartyMon1
+	add hl, bc ; hl now points to MSB of max HP
+	ld a, [hli]
+	ld b, a
+	ld c, [hl]
+	pop hl		;pop wPartyMonX
+	push bc
+	push hl		;push wPartyMonX
+
 	ld bc, wPartyMon1Stats - wPartyMon1
 	add hl, bc
 	ld d, h
@@ -1348,49 +1360,9 @@ ItemUseMedicine:
 	ld bc, (wPartyMon1Exp + 2) - wPartyMon1Stats
 	add hl, bc ; hl now points to LSB of experience
 	ld b, 1
-	jp CalcStats ; recalculate stats
-.useRareCandy
-	push hl
-	ld bc, wPartyMon1Level - wPartyMon1
-	add hl, bc ; hl now points to level
-	ld a, [hl] ; a = level
-	cp MAX_LEVEL
-	jr z, .vitaminNoEffect ; can't raise level above 100
-	inc a
-	ld [hl], a ; store incremented level
-	ld [wCurEnemyLVL], a
-	push hl
-	push de
-	ld d, a
-	callfar CalcExperience ; calculate experience for next level and store it at hExperience
-	pop de
-	pop hl
-	ld bc, wPartyMon1Exp - wPartyMon1Level
-	add hl, bc ; hl now points to MSB of experience
-; update experience to minimum for new level
-	ldh a, [hExperience]
-	ld [hli], a
-	ldh a, [hExperience + 1]
-	ld [hli], a
-	ldh a, [hExperience + 2]
-	ld [hl], a
-	pop hl
-	ld a, [wWhichPokemon]
-	push af
-	ld a, [wcf91]
-	push af
-	push de
-	push hl
-	ld bc, wPartyMon1MaxHP - wPartyMon1
-	add hl, bc ; hl now points to MSB of max HP
-	ld a, [hli]
-	ld b, a
-	ld c, [hl]
-	pop hl
-	push bc
-	push hl
-	call .recalculateStats
-	pop hl
+	call CalcStats ; recalculate stats
+
+	pop hl		;pop wPartyMonX
 	ld bc, (wPartyMon1MaxHP + 1) - wPartyMon1
 	add hl, bc ; hl now points to LSB of max HP
 	pop bc
@@ -1409,6 +1381,54 @@ ItemUseMedicine:
 	ld a, [hl]
 	adc b
 	ld [hl], a
+	ret
+
+.useRareCandy
+	push hl	;push wPartyMonX
+	ld bc, wPartyMon1Level - wPartyMon1
+	add hl, bc ; hl now points to level
+	ld a, [hl] ; a = level
+	cp MAX_LEVEL
+	jr z, .vitaminNoEffect ; can't raise level above 100
+	inc a
+	ld [hl], a ; store incremented level
+	ld [wCurEnemyLVL], a
+	push hl
+	push de
+	ld d, a
+	callfar CalcExperience ; calculate experience for next level and store it at hExperience
+	ld a, [wCurEnemyLVL]
+	cp d
+	pop de
+	pop hl
+	jr z, .candy_continue
+	dec a
+	ld [hl], a
+	ld [wCurEnemyLVL], a
+	jr .vitaminNoEffect
+.candy_continue
+	ld bc, wPartyMon1Exp - wPartyMon1Level
+	add hl, bc ; hl now points to MSB of experience
+; update experience to minimum for new level
+	ld a, [hExperience]
+	ld [hli], a
+	ld a, [hExperience + 1]
+	ld [hli], a
+	ld a, [hExperience + 2]
+	ld [hl], a	
+
+.returnDVMedicine
+
+	pop hl	;pop wPartyMonX
+	
+	ld a, [wWhichPokemon]
+	push af
+	ld a, [wcf91]
+	push af
+	push de
+
+	call .recalculateStats
+
 	ld a, RARE_CANDY_MSG
 	ld [wPartyMenuTypeOrMessageID], a
 	call RedrawPartyMenu
