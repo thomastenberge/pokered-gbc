@@ -185,7 +185,7 @@ MtMoonB2FSuperNerdText:
 	CheckEvent EVENT_BEAT_MT_MOON_EXIT_SUPER_NERD
 	jr z, .beat_super_nerd
 	; CheckEitherEventSetReuseA EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
-	and (1 << (EVENT_GOT_DOME_FOSSIL % 8)) | (1 << (EVENT_GOT_HELIX_FOSSIL % 8))
+	; and (1 << (EVENT_GOT_DOME_FOSSIL % 8)) | (1 << (EVENT_GOT_HELIX_FOSSIL % 8))
 	jr nz, .got_a_fossil
 	ld hl, MtMoonB2fSuperNerdEachTakeOneText
 	call PrintText
@@ -241,12 +241,12 @@ MtMoonB2FDomeFossilText:
 	text_asm
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, .YouWantText
-	call PrintText
-	call YesNoChoice
-	ld a, [wCurrentMenuItem]
-	and a
-	jr nz, .done
+	; ld hl, .YouWantText
+	; call PrintText
+	; call YesNoChoice
+	; ld a, [wCurrentMenuItem]
+	; and a
+	; jr nz, .done
 	lb bc, DOME_FOSSIL, 1
 	call GiveItem
 	jp nc, MtMoonB2FYouHaveNoRoomText
@@ -269,12 +269,12 @@ MtMoonB2FHelixFossilText:
 	text_asm
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, .YouWantText
-	call PrintText
-	call YesNoChoice
-	ld a, [wCurrentMenuItem]
-	and a
-	jr nz, .done
+	; ld hl, .YouWantText
+	; call PrintText
+	; call YesNoChoice
+	; ld a, [wCurrentMenuItem]
+	; and a
+	; jr nz, .done
 	lb bc, HELIX_FOSSIL, 1
 	call GiveItem
 	jp nc, MtMoonB2FYouHaveNoRoomText
