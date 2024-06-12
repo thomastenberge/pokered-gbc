@@ -150,9 +150,12 @@ CheckForSmartHMuse::
 	ld c, FLASH
 	call PartyMoveTest
 	jr z, .noflash
+
+	call GBPalWhiteOut
 	;restore the map pal offset to brighten it up
 	xor a
 	ld [wMapPalOffset], a
+	call GBFadeInFromWhite
 	jp .return
 .noflash
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
