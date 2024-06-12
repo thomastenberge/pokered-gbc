@@ -14,15 +14,19 @@ _GameCornerClerk1DoYouNeedSomeGameCoinsText::
 	para "Do you need some"
 	line "game coins?"
 
-	para "It's ¥1000 for 50"
-	line "coins. Would you"
-	cont "like some?"
+	para "It's ¥5000 for"
+	line "500 coins. Would"
+	cont "you like some?"
 	done
 
 _GameCornerClerk1ThanksHereAre50CoinsText::
 	text "Thanks! Here are"
-	line "your 50 coins!"
+	line "your 500 coins!"
 	done
+
+_CeladonGameCornerTextAnother500::
+	text "Want another 500?"
+	prompt
 
 _GameCornerClerk1PleaseComePlaySometimeText::
 	text "No? Please come"

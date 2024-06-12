@@ -147,6 +147,7 @@ GameCornerClerk1Text:
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .declined
+.wantsToBuyMoreCoins	
 	; Can only get more coins if you
 	; - have the Coin Case
 	ld b, COIN_CASE
@@ -159,7 +160,7 @@ GameCornerClerk1Text:
 	xor a
 	ldh [hMoney], a
 	ldh [hMoney + 2], a
-	ld a, $10
+	ld a, $50
 	ldh [hMoney + 1], a
 	call HasEnoughMoney
 	jr nc, .buy_coins
@@ -170,7 +171,7 @@ GameCornerClerk1Text:
 	xor a
 	ldh [hMoney], a
 	ldh [hMoney + 2], a
-	ld a, $10
+	ld a, $50
 	ldh [hMoney + 1], a
 	ld hl, hMoney + 2
 	ld de, wPlayerMoney + 2
@@ -179,16 +180,25 @@ GameCornerClerk1Text:
 	; Receive 50 coins
 	xor a
 	ldh [hUnusedCoinsByte], a
-	ldh [hCoins], a
-	ld a, $50
 	ldh [hCoins + 1], a
-	ld de, wPlayerCoins + 1
-	ld hl, hCoins + 1
-	ld c, $2
+	ldh [hCoins + 2], a
+	ld a, $05
+	ldh [hCoins], a
+	ld de, wPlayerCoins + 2
+	ld hl, hCoins + 2
+	ld c, $3
 	predef AddBCDPredef
 	; Update display
 	call GameCornerDrawCoinBox
 	ld hl, .ThanksHereAre50Coins
+	call PrintText
+	ld hl, CeladonGameCornerTextAnother500
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr z, .wantsToBuyMoreCoins
+	ld hl, CeladonGameCornerThanks
 	jr .print_ret
 .declined
 	ld hl, .PleaseComePlaySometime
@@ -200,6 +210,7 @@ GameCornerClerk1Text:
 	ld hl, .DontHaveCoinCase
 .print_ret
 	call PrintText
+.done
 	jp TextScriptEnd
 
 .DoYouNeedSomeGameCoins:
@@ -224,6 +235,14 @@ GameCornerClerk1Text:
 
 .DontHaveCoinCase:
 	text_far _GameCornerClerk1DontHaveCoinCaseText
+	text_end
+
+CeladonGameCornerThanks:
+	text_far _Thanks2Text
+	text_end
+
+CeladonGameCornerTextAnother500:
+	text_far _CeladonGameCornerTextAnother500
 	text_end
 
 GameCornerMiddleAgedMan1Text:
