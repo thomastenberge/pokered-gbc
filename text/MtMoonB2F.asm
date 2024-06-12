@@ -30,7 +30,8 @@ _MtMoonB2FSuperNerdTheyreBothMineText::
 
 _MtMoonB2FSuperNerdOkIllShareText::
 	text "OK!"
-	line "I'll share!"
+	line "The Fossils are"
+	cont "yours!"
 	prompt
 
 _MtMoonB2fSuperNerdEachTakeOneText::
