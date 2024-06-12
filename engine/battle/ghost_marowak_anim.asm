@@ -24,8 +24,8 @@ MarowakAnim:
 	ld c, 10
 	call DelayFrames
 	ldh a, [rOBP1]
-	add a
-	add a
+	sla a
+	sla a
 	ldh [rOBP1], a
 	jr nz, .fadeOutGhostLoop
 	call ClearSprites

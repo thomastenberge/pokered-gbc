@@ -47,12 +47,6 @@ PokemonTower6FMarowakCoords:
 	db -1 ; end
 
 PokemonTower6FMarowakBattleScript:
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;joenote - clear bit to indicate the ghost marowak battle has ended
-	ld a, [wUnusedD721]
-	res 3, a
-	ld [wUnusedD721], a
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, PokemonTower6FSetDefaultScript

@@ -166,21 +166,13 @@ ItemUseBall:
 .notOldManBattle
 ; If the player is fighting the ghost Marowak, set the value that indicates the
 ; Pokémon can't be caught and skip the capture calculations.
-	;ld a, [wCurMap]
-	;cp POKEMONTOWER_6
-	;jr nz, .loop
-	;ld a, [wEnemyMonSpecies2]
-	;cp MAROWAK
-	;ld b, $10 ; can't be caught value
-	;jp z, .setAnimData
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;joenote - use a bit to determine if this is a ghost marowak battle
-	ld a, [wUnusedD721]
-	bit 3, a
-	jr z, .loop
+	ld a, [wCurMap]
+	cp POKEMON_TOWER_6F
+	jr nz, .loop
+	ld a, [wEnemyMonSpecies2]
+	cp RESTLESS_SOUL
 	ld b, $10 ; can't be caught value
-	jp .setAnimData
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	jp z, .setAnimData
 
 ; Get the first random number. Let it be called Rand1.
 ; Rand1 must be within a certain range according the kind of ball being thrown.
@@ -476,14 +468,9 @@ ItemUseBall:
 
 	push hl
 
-; If the Pokémon is transformed, the Pokémon is assumed to be a Ditto.
-; This is a bug because a wild Pokémon could have used Transform via
-; Mirror Move even though the only wild Pokémon that knows Transform is Ditto.
 	ld hl, wEnemyBattleStatus3
 	bit TRANSFORMED, [hl]
 	jr z, .notTransformed
-	ld a, DITTO
-	ld [wEnemyMonSpecies2], a
 	jr .skip6
 
 .notTransformed
@@ -929,7 +916,10 @@ ItemUseMedicine:
 	ld de, wBattleMonStats
 	ld bc, NUM_STATS * 2
 	call CopyData ; copy party stats to in-battle stat data
-	predef DoubleOrHalveSelectedStats
+	xor a
+	ld [wCalculateWhoseStats], a
+	callfar CalculateModifiedStats
+	callfar ApplyBadgeStatBoosts
 	jp .doneHealing
 .healHP
 	inc hl ; hl = address of current HP
