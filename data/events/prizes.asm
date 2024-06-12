@@ -55,9 +55,9 @@ ENDC
 	db "@"
 
 PrizeMenuTMsEntries:
-	db TM_RARE_CANDY
-	db TM_MOON_STONE
-	db TM_PP_UP
+	db RARE_CANDY
+	db MOON_STONE
+	db PP_UP
 	db "@"
 
 PrizeMenuTMsCost:
