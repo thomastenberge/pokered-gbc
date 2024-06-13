@@ -1,8 +1,8 @@
 DisplayEffectiveness:
-;joenote - if a multi-attack move, only display effectiveness on the last attack 
+;joenote - if a multi-attack move, only display effectiveness on the first attack 
 	callba TestMultiAttackMoveUse
 	jr nz, .next
-	callba TestMultiAttackMoveUse_lastAttack
+	callba TestMultiAttackMoveUse_firstAttack
 	ret nz
 .next
 
