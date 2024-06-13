@@ -23,3 +23,30 @@ SuperEffectiveText:
 NotVeryEffectiveText:
 	text_far _NotVeryEffectiveText
 	text_end
+
+;joenote - consolidating this task into one function in a different bank
+;		- don't print the redundant hits message if attacking only twice
+MultiAttackHitXTimesTXT_player:
+	ld hl, MultiHitText
+	ld a, [wPlayerMoveEffect]
+	ld b, a
+	ld a, [wPlayerMoveNum]
+	ld c, a
+	jr MultiAttackHitXTimesTXT_common
+MultiAttackHitXTimesTXT_enemy:
+	ld hl, HitXTimesText
+	ld a, [wEnemyMoveEffect]
+	ld b, a
+	ld a, [wEnemyMoveNum]
+	ld c, a
+;fall through
+MultiAttackHitXTimesTXT_common:
+	ld a, b
+	cp ATTACK_TWICE_EFFECT
+	jr z, .skipXhitsTXT
+	ld a, c
+	cp TWINEEDLE
+	jr z, .skipXhitsTXT
+	call PrintText
+.skipXhitsTXT	
+	ret
