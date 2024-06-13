@@ -1704,7 +1704,10 @@ wPseudoItemID:: db
 
 wUnusedD153:: db
 
-	ds 2
+wUnusedD155:: ; d155	;joenote - use this as a backup for how many pokemon to split exp between (fixing exp all)
+	ds 1				;this is a base-1-indexed number (so between 1 and 6 pkmn)
+						;While in active combat:
+						;bit 0 - setting this skips the text for a substitute taking damage
 
 wEvoStoneItemID:: db
 

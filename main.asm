@@ -122,7 +122,6 @@ INCLUDE "engine/overworld/map_sprites.asm"
 INCLUDE "engine/overworld/emotion_bubbles.asm"
 INCLUDE "engine/events/evolve_trade.asm"
 INCLUDE "engine/battle/move_effects/substitute.asm"
-INCLUDE "engine/menus/pc.asm"
 
 
 SECTION "Play Time", ROMX
@@ -396,6 +395,7 @@ SECTION "newCode", ROMX
 INCLUDE "custom_functions/func_overworld.asm"
 INCLUDE "custom_functions/func_battle.asm"
 INCLUDE "engine/pokemon/bills_pc.asm"
+INCLUDE "engine/menus/pc.asm"
 INCLUDE "engine/menus/change_box_menu.asm"
 INCLUDE "engine/menus/multi_choice_menu.asm"
 INCLUDE "engine/menus/custom_list_menu.asm"
