@@ -2834,6 +2834,8 @@ SendNewMonToBox:
 	jr nz, .loop6
 	ret
 
+;joenote - replacing this with adapted code from pokemon yellow to prevent statue fishing/surfing
+
 ; checks if the tile in front of the player is a shore or water tile
 ; used for surfing and fishing
 ; unsets carry if it is, sets carry if not
@@ -2841,20 +2843,22 @@ IsNextTileShoreOrWater::
 	ld a, [wCurMapTileset]
 	ld hl, WaterTilesets
 	ld de, 1
-	call IsInArray
-	jr nc, WaterTileSetIsNextTileShoreOrWater.notShoreOrWater
+	call IsInArray ; does the current map allow surfing?
+	jr nc, WaterTileSetIsNextTileShoreOrWater.notShoreOrWater ; if not, return
 	; fall through
 WaterTileSetIsNextTileShoreOrWater::
+	ld hl, WaterTile
 	ld a, [wCurMapTileset]
 	cp SHIP_PORT ; Vermilion Dock tileset
 	jr z, .skipShoreTiles ; if it's the Vermilion Dock tileset
+	cp GYM ; eastern shore tile in Safari Zone
+	jr z, .skipShoreTiles
+	cp DOJO ; usual eastern shore tile
+	jr z, .skipShoreTiles
+	cp SHIP ; SS Anne tileset
+	jr z, .skipShoreTiles
 	cp CAVERN ; PureRGBnote: ADDED: fixes an issue with the unused tiles in the cavern tileset causing surf incorrectly (they are used now)
 	jr z, .skipShoreTiles
-	ld a, [wTileInFrontOfPlayer] ; tile in front of player
-	cp $48 ; eastern shore tile in Safari Zone
-	jr z, .shoreOrWater
-	cp $32 ; usual eastern shore tile
-	jr z, .shoreOrWater
 .skipShoreTiles
 	ld a, [wTileInFrontOfPlayer] ; tile in front of player
 	cp $14 ; water tile
@@ -2866,7 +2870,17 @@ WaterTileSetIsNextTileShoreOrWater::
 	and a
 	ret
 
-INCLUDE "data/tilesets/water_tilesets.asm"
+; shore tiles
+ShoreTiles:
+	db $48, $32
+WaterTile:
+	db $14
+	db $ff ; terminator
+
+; tilesets with water
+WaterTilesets:
+	db OVERWORLD, FOREST, DOJO, GYM, SHIP, SHIP_PORT, CAVERN, FACILITY, PLATEAU
+	db $ff ; terminator
 
 ReadSuperRodData:
 ; return e = 2 if no fish on this map
