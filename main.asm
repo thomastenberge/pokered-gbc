@@ -156,7 +156,7 @@ INCLUDE "engine/events/hidden_objects/bills_house_pc.asm"
 INCLUDE "engine/events/hidden_objects/oaks_lab_email.asm"
 
 
-;SECTION "Bill's PC", ROMX ; PureRGBnote: MOVED: bills pc code was moved to movedCode section
+;SECTION "Bill's PC", ROMX ; PureRGBnote: MOVED: bills pc code was moved to SECTION newCode
 
 SECTION "Battle Engine 3", ROMX
 
@@ -343,8 +343,6 @@ INCLUDE "engine/items/town_map.asm"
 INCLUDE "engine/gfx/mon_icons.asm"
 INCLUDE "engine/events/in_game_trades.asm"
 INCLUDE "engine/gfx/palettes.asm"
-INCLUDE "engine/items/tm_prices.asm"
-
 
 SECTION "Engine Save", ROMX
 
@@ -356,6 +354,7 @@ BlackTile:
 	ENDR
 BlackTileEnd:
 
+INCLUDE "engine/battle/ghost_marowak_anim.asm"
 INCLUDE "color/ghost_marowak_anim.asm"
 INCLUDE "color/color.asm"
 
@@ -370,14 +369,7 @@ INCLUDE "engine/items/itemfinder.asm"
 SECTION "Vending Machine", ROMX
 
 INCLUDE "engine/events/vending_machine.asm"
-INCLUDE "custom_functions/func_overworld.asm"
-INCLUDE "engine/battle/ghost_marowak_anim.asm"
-INCLUDE "engine/menus/change_box_menu.asm"
-INCLUDE "engine/menus/multi_choice_menu.asm"
-INCLUDE "engine/pokemon/bills_pc.asm"
-INCLUDE "engine/overworld/use_another_repel.asm"
-INCLUDE "engine/battle/store_pkmn_levels.asm"
-INCLUDE "engine/menus/custom_list_menu.asm"
+
 
 SECTION "Itemfinder 2", ROMX
 
@@ -396,5 +388,15 @@ INCLUDE "data/battle_anims/subanimations.asm"
 INCLUDE "data/battle_anims/frame_blocks.asm"
 INCLUDE "engine/movie/evolution.asm"
 INCLUDE "engine/overworld/elevator.asm"
+INCLUDE "engine/items/tm_prices.asm"
 
 INCLUDE "color/animations.asm"
+
+SECTION "newCode", ROMX
+INCLUDE "custom_functions/func_overworld.asm"
+INCLUDE "engine/pokemon/bills_pc.asm"
+INCLUDE "engine/menus/change_box_menu.asm"
+INCLUDE "engine/menus/multi_choice_menu.asm"
+INCLUDE "engine/menus/custom_list_menu.asm"
+INCLUDE "engine/overworld/use_another_repel.asm"
+INCLUDE "engine/battle/store_pkmn_levels.asm"
