@@ -3321,7 +3321,13 @@ MirrorMoveCheck:
 	                             ; damage calculation and accuracy tests only happen for the first hit
 	res ATTACKING_MULTIPLE_TIMES, [hl] ; clear attacking multiple times status when all attacks are over
 	ld hl, MultiHitText
-	call PrintText
+	
+	;joenote - don't print the redundant hits message if attacking only twice
+	ld a, [wPlayerMoveEffect]
+	cp ATTACK_TWICE_EFFECT
+	call nz, PrintText
+	;call PrintText
+
 	xor a
 	ld [wPlayerNumHits], a
 .executeOtherEffects
@@ -5879,7 +5885,13 @@ EnemyCheckIfMirrorMoveEffect:
 	jp nz, GetEnemyAnimationType
 	res ATTACKING_MULTIPLE_TIMES, [hl] ; mon is no longer hitting multiple times
 	ld hl, HitXTimesText
-	call PrintText
+
+	;joenote - don't print the redundant hits message if attacking only twice
+	ld a, [wEnemyMoveEffect]
+	cp ATTACK_TWICE_EFFECT
+	call nz, PrintText
+	;call PrintText
+
 	xor a
 	ld [wEnemyNumHits], a
 .notMultiHitMove
