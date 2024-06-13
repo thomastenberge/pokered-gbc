@@ -57,17 +57,33 @@ SeafoamIslandsB3F_ScriptPointers:
 	dw_const SeafoamIslandsB3FObjectMoving2Script, SCRIPT_SEAFOAMISLANDSB3F_OBJECT_MOVING2
 	EXPORT SCRIPT_SEAFOAMISLANDSB3F_MOVE_OBJECT ; used by engine/overworld/player_state.asm
 
+; wispnote - Added a check for the righ bank size which executes
+; a different JoyPad sequence to simulate the current.
 SeafoamIslandsB3FDefaultScript:
 	CheckBothEventsSet EVENT_SEAFOAM3_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM3_BOULDER2_DOWN_HOLE
 	ret z
 	ld a, [wYCoord]
 	cp 8
-	ret nz
+	jr nz, .checkEntryFromRightBank
 	ld a, [wXCoord]
 	cp 15
 	ret nz
-	ld hl, wSimulatedJoypadStatesEnd
+	jp .isEntryFromLeftBank
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; wispnote - Right Bank Check
+.checkEntryFromRightBank
+	cp $a
+	ret nz
+	ld a, [wXCoord]
+	cp $17
+	ret nz
+	ld de, RLEMovementRightBank
+	jp .simJoyPadFromBanksSeafoamIslands4
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+.isEntryFromLeftBank
 	ld de, RLEList_ForcedSurfingStrongCurrentNearSteps
+.simJoyPadFromBanksSeafoamIslands4
+	ld hl, wSimulatedJoypadStatesEnd	
 	call DecodeRLEList
 	dec a
 	ld [wSimulatedJoypadStatesIndex], a
@@ -83,6 +99,15 @@ RLEList_ForcedSurfingStrongCurrentNearSteps:
 	db D_RIGHT, 5
 	db D_DOWN, 3
 	db -1 ; end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; wispnote - JoyPad Sequence for Entry from the Right Bank Side
+RLEMovementRightBank:
+	db D_DOWN,6
+	db D_LEFT,2
+	db D_DOWN,1
+	db $ff
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 SeafoamIslandsB3FObjectMoving1Script:
 	ld a, [wSimulatedJoypadStatesIndex]
@@ -121,11 +146,11 @@ SeafoamIslandsB3FMoveObjectScript:
 	ld [wSeafoamIslandsB3FCurScript], a
 	ret
 
+; wispnote - Correct strong current's path after falling through 2nd boulder's hole.
 .RLEList_StrongCurrentNearRightBoulder:
 	db D_DOWN, 6
-	db D_RIGHT, 2
+	db D_RIGHT, 1
 	db D_DOWN, 4
-	db D_LEFT, 1
 	db -1 ; end
 
 .RLEList_StrongCurrentNearLeftBoulder:

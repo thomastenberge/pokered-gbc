@@ -37,6 +37,12 @@ IsSurfingAllowed:
 	ret nc
 	ld hl, wd728
 	res 1, [hl]
+
+	;run alternate code if coming here from the overworld hotkey function
+	ld a, [wActionResultOrTookBattleTurn]
+	and a
+	jr nz, .alt_fastcurrent
+	
 	ld hl, CurrentTooFastText
 	jp PrintText
 .forcedToRideBike
@@ -44,6 +50,19 @@ IsSurfingAllowed:
 	res 1, [hl]
 	ld hl, CyclingIsFunText
 	jp PrintText
+.alt_fastcurrent
+	;initialize a text box without drawing anything special. makes this show up with surf hotkeys
+	ld a, 1
+	ld [wAutoTextBoxDrawingControl], a
+	callba DisplayTextIDInit
+
+	ld hl, CurrentTooFastText
+	call PrintText
+	
+	;use $ff value loaded into hSpriteIndexOrTextID to make DisplayTextID display nothing and close any text
+	ld a, $FF
+	ld [hSpriteIndexOrTextID], a
+	jp DisplayTextID
 
 SeafoamIslandsB4FStairsCoords:
 	dbmapcoord  7, 11
