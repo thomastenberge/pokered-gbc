@@ -4820,6 +4820,8 @@ ApplyAttackToEnemyPokemon:
 	jr z, .superFangEffect
 	cp SPECIAL_DAMAGE_EFFECT
 	jr z, .specialDamage
+	cp TRAPPING_EFFECT	;joenote - clear hyper beam if target hit with trapping effect
+	call z, ClearHyperBeam
 	ld a, [wPlayerMovePower]
 	and a
 	jp z, ApplyAttackToEnemyPokemonDone ; no attack to apply if base power is 0
