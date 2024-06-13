@@ -10,12 +10,6 @@ ResetStatusAndHalveMoneyOnBlackout::
 	ld [wNPCMovementScriptPointerTableNum], a
 	ld [wFlags_0xcd60], a
 
-	ldh [hMoney], a
-	ldh [hMoney + 1], a
-	ldh [hMoney + 2], a
-	call HasEnoughMoney
-	jr c, .lostmoney ; never happens
-
 	; Halve the player's money.
 	ld a, [wPlayerMoney]
 	ldh [hMoney], a
@@ -36,7 +30,11 @@ ResetStatusAndHalveMoneyOnBlackout::
 	ldh a, [hDivideBCDQuotient + 2]
 	ld [wPlayerMoney + 2], a
 
-.lostmoney
+	;;;;;;; PureRGBnote: ADDED: clear all safari zone flags on blackout. 
+	;;;;;;; Prevents strange behaviour / glitches when blacking out in the safari zone
+	;;;;;;; both by poison or by battle.
+	callfar ClearSafariFlags
+	
 	ld hl, wd732
 	set 2, [hl]
 	res 3, [hl]

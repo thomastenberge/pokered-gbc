@@ -558,12 +558,22 @@ PlayMapChangeSound::
 	ret nz
 	jp GBFadeOutToWhite ; HAX: Fade to white instead of black. Looks nicer IMO.
 
-CheckIfInOutsideMap::
-; If the player is in an outside map (a town or route), set the z flag
-	ld a, [wCurMapTileset]
-	and a ; most towns/routes have tileset 0 (OVERWORLD)
+CheckIfInFlyMap::
+	call CheckIfInOutsideMap
 	ret z
-	cp PLATEAU ; Route 23 / Indigo Plateau
+	cp FOREST ; FIXED: can fly in safari zone and viridian forest
+	ret
+
+CheckIfInOutsideMap::
+	ld a, [wCurMap]
+	cp CELADON_MART_ROOF ; PureRGBnote: FIXED: can fly on roofs
+	ret z
+	cp CELADON_MANSION_ROOF ; PureRGBnote: FIXED: can fly on roofs
+	ret z
+	; fall through
+	call CheckIfInOutsideMap
+	ret z
+	cp FOREST ; PureRGBnote: FIXED: can fly in safari zone and viridian forest
 	ret
 
 ; this function is an extra check that sometimes has to pass in order to warp, beyond just standing on a warp

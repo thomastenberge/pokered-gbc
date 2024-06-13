@@ -74,6 +74,16 @@ SafariGameOverText:
 	call PrintText
 	jp TextScriptEnd
 
+ClearSafariFlags::
+	; used when leaving the safari zone by flying, teleporting, blacking out, etc.
+	ResetEvents EVENT_SAFARI_GAME_OVER, EVENT_IN_SAFARI_ZONE
+	xor a
+	ld [wNumSafariBalls], a
+	ld [wSafariSteps], a
+	ld [wSafariZoneGameOver], a 
+	ld [wSafariZoneGateCurScript], a 
+	ret
+
 TimesUpText:
 	text_far _TimesUpText
 	text_end
