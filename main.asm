@@ -394,6 +394,7 @@ INCLUDE "color/animations.asm"
 
 SECTION "newCode", ROMX
 INCLUDE "custom_functions/func_overworld.asm"
+INCLUDE "custom_functions/func_battle.asm"
 INCLUDE "engine/pokemon/bills_pc.asm"
 INCLUDE "engine/menus/change_box_menu.asm"
 INCLUDE "engine/menus/multi_choice_menu.asm"

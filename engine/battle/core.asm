@@ -3150,8 +3150,8 @@ ExecutePlayerMove:
 	ld [wMoveMissed], a
 	ld [wMonIsDisobedient], a
 	ld [wMoveDidntMiss], a
-	ld a, EFFECTIVE
-	ld [wDamageMultipliers], a
+	; ld a, EFFECTIVE
+	; ld [wDamageMultipliers], a ; joenote - move this to AdjustDamageForMoveType to prevent multi-attack overflows
 	ld a, [wActionResultOrTookBattleTurn]
 	and a ; has the player already used the turn (e.g. by using an item, trying to run or switching pokemon)
 	jp nz, ExecutePlayerMoveDone
@@ -5278,6 +5278,9 @@ IncrementMovePP:
 
 ; function to adjust the base damage of an attack to account for type effectiveness
 AdjustDamageForMoveType:
+	ld a, EFFECTIVE
+	ld [wDamageMultipliers], a ;joenote - move this to AdjustDamageForMoveType to prevent multi-attack overflows
+
 ; values for player turn
 	ld hl, wBattleMonType
 	ld a, [hli]
@@ -5701,8 +5704,8 @@ ExecuteEnemyMove:
 	xor a
 	ld [wMoveMissed], a
 	ld [wMoveDidntMiss], a
-	ld a, EFFECTIVE
-	ld [wDamageMultipliers], a
+	; ld a, EFFECTIVE
+	; ld [wDamageMultipliers], a ; joenote - move this to AdjustDamageForMoveType to prevent multi-attack overflows
 	call CheckEnemyStatusConditions
 	jr nz, .enemyHasNoSpecialConditions
 	jp hl
