@@ -184,7 +184,7 @@ CinnabarGym_TextPointers:
 	dw_const CinnabarGymSuperNerd5,                 TEXT_CINNABARGYM_SUPER_NERD5
 	dw_const CinnabarGymSuperNerd6,                 TEXT_CINNABARGYM_SUPER_NERD6
 	dw_const CinnabarGymSuperNerd7,                 TEXT_CINNABARGYM_SUPER_NERD7
-	dw_const CinnabarGymGymGuideText,               TEXT_CINNABARGYM_GYM_GUIDE
+	dw_const CinnabarGymGuideText,               	TEXT_CINNABARGYM_GYM_GUIDE
 	dw_const CinnabarGymBlaineVolcanoBadgeInfoText, TEXT_CINNABARGYM_BLAINE_VOLCANO_BADGE_INFO
 	dw_const CinnabarGymBlaineReceivedTM38Text,     TEXT_CINNABARGYM_BLAINE_RECEIVED_TM38
 	dw_const CinnabarGymBlaineTM38NoRoomText,       TEXT_CINNABARGYM_BLAINE_TM38_NO_ROOM
@@ -456,22 +456,33 @@ CinnabarGymSuperNerd7:
 	text_far _CinnabarGymSuperNerd7AfterBattleText
 	text_end
 
-CinnabarGymGymGuideText:
+CinnabarGymGuideText:
 	text_asm
 	CheckEvent EVENT_BEAT_BLAINE
 	jr nz, .afterBeat
 	ld hl, .ChampInMakingText
+	call PrintText
 	jr .done
 .afterBeat
-	ld hl, .BeatBlaineText
-.done
+	jr z, .donePrompt
+	ld hl, CinnabarGymGuideBeatBlaineTextPrompt
 	call PrintText
+.done
 	jp TextScriptEnd
+.donePrompt
+	ld hl, CinnabarGymGuideBeatBlaineText
+	call PrintText
+	jr .done
 
 .ChampInMakingText:
 	text_far _CinnabarGymGymGuideChampInMakingText
 	text_end
 
-.BeatBlaineText:
-	text_far _CinnabarGymGymGuideBeatBlaineText
+CinnabarGymGuideBeatBlaineText:
+	text_far _CinnabarGymGuideBeatBlaineText
+	text_end
+
+CinnabarGymGuideBeatBlaineTextPrompt:
+	text_far _CinnabarGymGuideBeatBlaineText
+	text_promptbutton
 	text_end

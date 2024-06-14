@@ -206,7 +206,7 @@ _CinnabarGymGymGuideChampInMakingText::
 	line "some BURN HEALs!"
 	done
 
-_CinnabarGymGymGuideBeatBlaineText::
+_CinnabarGymGuideBeatBlaineText::
 	text "<PLAYER>! You beat"
 	line "that fire brand!"
-	done
+	text_end
