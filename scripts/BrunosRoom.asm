@@ -112,7 +112,14 @@ BrunosRoomBrunoEndBattleScript:
 	jp z, ResetBrunoScript
 	ld a, TEXT_BRUNOSROOM_BRUNO
 	ldh [hSpriteIndexOrTextID], a
-	jp DisplayTextID
+	call DisplayTextID
+;;;;;;;;;; PureRGBnote: ADDED: sound effect for the doors opening
+	ld a, SFX_GO_INSIDE
+	call PlaySound
+	ret
+;;;;;;;;;;
+
+
 
 BrunosRoom_TextPointers:
 	def_text_pointers
