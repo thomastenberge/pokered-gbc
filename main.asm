@@ -1,4 +1,4 @@
-SECTION "bank1", ROMX
+ SECTION "bank1", ROMX
 
 INCLUDE "data/sprites/facings.asm"
 INCLUDE "engine/events/black_out.asm"
@@ -401,3 +401,4 @@ INCLUDE "engine/menus/multi_choice_menu.asm"
 INCLUDE "engine/menus/custom_list_menu.asm"
 INCLUDE "engine/overworld/use_another_repel.asm"
 INCLUDE "engine/battle/store_pkmn_levels.asm"
+INCLUDE "engine/battle/move_effects/teleport.asm"
