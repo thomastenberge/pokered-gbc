@@ -1253,6 +1253,9 @@ wTrainerNo:: db
 wCriticalHitOrOHKO:: db
 
 wMoveMissed:: db
+;0 if didn't miss
+;1 if regular miss
+;2 if miss due to damage being reduced to 0 in calculations
 
 ; always 0
 wPlayerStatsToDouble:: db
