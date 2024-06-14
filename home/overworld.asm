@@ -2300,3 +2300,15 @@ LoadDestinationWarpPosition::
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	ret
+
+SetLastBlackoutMap::
+	; called when entering pokemon centers
+	ld a, [wLastMap]
+	ld [wLastBlackoutMap], a
+	ret
+
+SetCurBlackoutMap::
+	; called after using FLY
+	ld a, [wCurMap]
+	ld [wLastBlackoutMap], a
+	ret
