@@ -150,6 +150,6 @@ _Route8CooltrainerF4AfterBattleText::
 
 _Route8UndergroundSignText::
 	text "UNDERGROUND PATH"
-	line "CELADON CITY -"
-	cont "LAVENDER TOWN"
+	line "LAVENDER TOWN -"
+	cont "CELADON CITY"
 	done
