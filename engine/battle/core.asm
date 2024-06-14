@@ -1411,6 +1411,10 @@ EnemySendOutFirstMon:
 	ld a, [wOptions]
 	bit BIT_BATTLE_SHIFT, a
 	jr nz, .next4
+;;;;;;;;;; PureRGBnote: ADDED: if you have no pokemon left (others are fainted), don't ask if the player wants to switch
+	callfar CheckCanForceSwitch
+	jr z, .next4
+;;;;;;;;;;	
 	ld hl, TrainerAboutToUseText
 	call PrintText
 	hlcoord 0, 7
