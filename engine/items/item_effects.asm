@@ -2844,9 +2844,7 @@ IsNextTileShoreOrWater::
 	ld hl, WaterTilesets
 	ld de, 1
 	call IsInArray ; does the current map allow surfing?
-	jr nc, WaterTileSetIsNextTileShoreOrWater.notShoreOrWater ; if not, return
-	; fall through
-WaterTileSetIsNextTileShoreOrWater::
+	jr nc, .notShoreOrWater ; if not, return
 	ld hl, WaterTile
 	ld a, [wCurMapTileset]
 	cp SHIP_PORT ; Vermilion Dock tileset
@@ -2859,9 +2857,11 @@ WaterTileSetIsNextTileShoreOrWater::
 	jr z, .skipShoreTiles
 	cp CAVERN ; PureRGBnote: ADDED: fixes an issue with the unused tiles in the cavern tileset causing surf incorrectly (they are used now)
 	jr z, .skipShoreTiles
+	ld hl, ShoreTiles
 .skipShoreTiles
 	ld a, [wTileInFrontOfPlayer] ; tile in front of player
-	cp $14 ; water tile
+	ld de, $1
+	call IsInArray
 	jr z, .shoreOrWater
 .notShoreOrWater
 	scf

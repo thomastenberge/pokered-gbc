@@ -1768,15 +1768,26 @@ CollisionCheckOnWater::
 	call CheckForJumpingAndTilePairCollisions
 	jr c, .collision
 	predef GetTileAndCoordsInFrontOfPlayer ; get tile in front of player (puts it in c and [wTileInFrontOfPlayer])
-	ld d, c ; put the tile in front of the player into d so the callfar after this doesn't affect the register
-	callfar WaterTileSetIsNextTileShoreOrWater
-	jr nc, .noCollision
+	ld a, [wTileInFrontOfPlayer] ; tile in front of player
+	cp $14 ; water tile
+	jr z, .noCollision ; keep surfing if it's a water tile
+	cp $32 ; either the left tile of the S.S. Anne boarding platform or the tile on eastern coastlines (depending on the current tileset)
+	jr z, .checkIfVermilionDockTileset
+	cp $48 ; tile on right on coast lines in Safari Zone
+	jr z, .noCollision ; keep surfing
 ; check if the [land] tile in front of the player is passable
 .checkIfNextTileIsPassable
-;;;;;;;;;; PureRGBnote: CHANGED: unified code for checking if a tile is passable
-	callfar _CheckTilePassable
-	jr nc, .stopSurfing
-;;;;;;;;;;
+	ld hl, wTilesetCollisionPtr ; pointer to list of passable tiles
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+.loop
+	ld a, [hli]
+	cp $ff
+	jr z, .collision
+	cp c
+	jr z, .stopSurfing ; stop surfing if the tile is passable
+	jr .loop
 .collision
 	ld a, [wChannelSoundIDs + CHAN5]
 	cp SFX_COLLISION ; check if collision sound is already playing
@@ -1796,6 +1807,11 @@ CollisionCheckOnWater::
 	call LoadPlayerSpriteGraphics
 	call PlayDefaultMusic
 	jr .noCollision
+.checkIfVermilionDockTileset
+	ld a, [wCurMapTileset] ; tileset
+	cp SHIP_PORT ; Vermilion Dock tileset
+	jr nz, .noCollision ; keep surfing if it's not the boarding platform tile
+	jr .stopSurfing ; if it is the boarding platform tile, stop surfing
 
 ; function to run the current map's script
 RunMapScript::
