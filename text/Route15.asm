@@ -10,13 +10,13 @@ _Route15CooltrainerF1EndBattleText::
 	prompt
 
 _Route15CooltrainerF1AfterBattleText::
-	text "You can't change"
-	line "the nickname of"
-	cont "any #MON you"
-	cont "get in a trade."
+	text "A #MON I got in"
+	line "a trade had a"
+	cont "nickname I did'nt"
+	cont "like. A man in"
 
-	para "Only the Original"
-	line "Trainer can."
+	para "LAVENDER TOWN"
+	line "changed it for me."
 	done
 
 _Route15CooltrainerF2BattleText::
