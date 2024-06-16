@@ -28,10 +28,13 @@ _PokemonMansion3FScientistAfterBattleText::
 	cont "over there!"
 	done
 
+;joenote - edited text to be closer to original japanese context
 _PokemonMansion3FDiaryText::
 	text "Diary: Feb. 6"
-	line "MEW gave birth."
+	line "A new #MON"
+	cont "was gestated with"
+	cont "MEW's superb DNA."
 
-	para "We named the"
-	line "newborn MEWTWO."
+	para "An enhanced new"
+	line "species: MEWTWO."
 	done

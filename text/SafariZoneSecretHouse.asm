@@ -28,6 +28,11 @@ _SafariZoneSecretHouseFishingGuruHM03ExplanationText::
 	line "able to ferry you"
 	cont "across water!"
 
+;joenote - add hotkey info
+	para "Press SELECT when"
+	line "you are facing a"
+	cont "shore to use it."
+
 	para "And, this HM isn't"
 	line "disposable! You"
 	cont "can use it over"

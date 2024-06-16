@@ -525,8 +525,8 @@ _ViridianSchoolNotebookText2::
 	cont "catch, so weaken"
 	cont "it first!"
 
-	para "Poison, burns and"
-	line "other damage are"
+	para "Sleep, paralysis"
+	line "and damage is"
 	cont "effective!"
 	prompt
 
@@ -682,6 +682,9 @@ _ViridianBlackboardPrlzText::
 	line "make #MON"
 	cont "moves misfire!"
 
+	para "It cuts SPEED"
+	line "by 75 percent."
+
 	para "Paralysis remains"
 	line "after battles."
 
@@ -690,8 +693,8 @@ _ViridianBlackboardPrlzText::
 	prompt
 
 _ViridianBlackboardBurnText::
-	text "A burn halves a"
-	line "#MON's ATTACK."
+	text "A burn reduces"
+	line "ATTACK by half."
 	cont "It also causes"
 	cont "ongoing damage."
 
@@ -1381,8 +1384,8 @@ _PartyMenuBattleText::
 	done
 
 _PartyMenuUseTMText::
-	text "Use TM on which"
-	line "#MON?"
+	text "Use machine on"	;joenote - HMs use this, so made it generic
+	line "which #MON?"
 	done
 
 _PartyMenuSwapMonText::

@@ -50,3 +50,11 @@ MultiAttackHitXTimesTXT_common:
 	call PrintText
 .skipXhitsTXT	
 	ret
+
+MultiHitText:
+	text_far _MultiHitText
+	text_end
+
+HitXTimesText:
+	text_far _HitXTimesText
+	text_end

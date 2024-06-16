@@ -144,7 +144,8 @@ UpdateHPBar_AnimateHPBar:
 	push de
 	ld d, $6
 	call DrawHPBarWithColor ; HAX: call changed to update color as well
-	ld c, 2
+	;ld c, 2
+	ld c, 1		;joenote - speed up HP bar animation
 	call DelayFrames
 	pop de
 	ld a, [wHPBarDelta] ; +1 or -1

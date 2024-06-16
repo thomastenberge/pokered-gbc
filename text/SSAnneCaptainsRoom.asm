@@ -29,6 +29,11 @@ _SSAnneCaptainsRoomCaptainIFeelMuchBetterText::
 	line "#MON and you"
 	cont "can see it CUT"
 	cont "any time!"
+
+;joenote - add hotkey info
+	para "Press SELECT when"
+	line "facing grass or a"
+	cont "bush to use it."
 	prompt
 
 _SSAnneCaptainsRoomCaptainReceivedHM01Text::

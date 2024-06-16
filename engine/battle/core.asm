@@ -3366,10 +3366,6 @@ MirrorMoveCheck:
 	; Responsible for executing Twineedle's second side effect (poison).
 	jp ExecutePlayerMoveDone
 
-MultiHitText:
-	text_far _MultiHitText
-	text_end
-
 ExecutePlayerMoveDone:
 	xor a
 	ld [wActionResultOrTookBattleTurn], a
@@ -5910,10 +5906,6 @@ EnemyCheckIfMirrorMoveEffect:
 	call IsInArray
 	call nc, JumpMoveEffect
 	jr ExecuteEnemyMoveDone
-
-HitXTimesText:
-	text_far _HitXTimesText
-	text_end
 
 ExecuteEnemyMoveDone:
 	ld b, $1

@@ -25,9 +25,10 @@ _PokemonMansion2FDiary1Text::
 	cont "in the jungle."
 	done
 
+;joenote - edited text to be closer to original japanese context
 _PokemonMansion2FDiary2Text::
 	text "Diary: July 10"
-	line "We christened the"
+	line "I christened the"
 	cont "newly discovered"
 	cont "#MON, MEW."
 	done

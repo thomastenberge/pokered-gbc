@@ -1852,6 +1852,13 @@ RodResponse:
 	ld [wCurEnemyLVL], a
 	ld a, c ; species
 	ld [wCurOpponent], a
+	; store fishing item index so we can reload it next time we open the item menu outside battle
+	ld a, [wBagSavedMenuItem]
+	ld [wSavedFishingItem], a
+	ld a, [wListScrollOffset]
+	ld [wSavedFishingItemOffset], a
+	ld a, 2
+	ld [wExtraSavedStartMenuIndex], a ; ITEM menu saved index saved for use after battle
 
 .next
 	ld hl, wWalkBikeSurfState
@@ -1884,7 +1891,7 @@ FishingInit:
 	call PrintText
 	ld a, SFX_HEAL_AILMENT
 	call PlaySound
-	ld c, 80
+	ld c, 20
 	call DelayFrames
 	and a
 	ret

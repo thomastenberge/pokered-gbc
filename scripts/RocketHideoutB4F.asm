@@ -196,7 +196,7 @@ RocketHideoutB4FRocket2AfterBattleText:
 	text_far _RocketHideoutB4FRocket2AfterBattleText
 	text_promptbutton
 	text_asm
-	SetEvent EVENT_ROCKET_DROPPED_LIFT_KEY
+	CheckAndSetEvent EVENT_ROCKET_DROPPED_LIFT_KEY
 	ld a, HS_ROCKET_HIDEOUT_B4F_ITEM_5
 	ld [wMissableObjectIndex], a
 	predef ShowObject

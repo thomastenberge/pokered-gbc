@@ -59,6 +59,11 @@ _WardensHouseWardenHM04ExplanationText::
 	cont "when you're out-"
 	cont "side of battle."
 
+;joenote - add hotkey info
+	para "Press SELECT when"
+	line "facing a boulder"
+	cont "to activate it."
+
 	para "Oh yes, did you"
 	line "find SECRET HOUSE"
 	cont "in SAFARI ZONE?"
