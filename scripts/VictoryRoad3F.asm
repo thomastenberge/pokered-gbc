@@ -18,11 +18,11 @@ VictoryRoad3FCheckBoulderEventScript:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; wispnote - If the switch is activated place the boulder in switch's coordinates.
 ; Sprite07 indexes the first boulder, and ($03, $05) are the first swtich's coordinates.
-	ld hl, Sprite07MapY
+	ld hl, wShadowOAMSprite07YCoord
 	ld a, $05
 	add 4; wispnote - We need to offset coordinates by 4
 	ld [hl], a
-	ld hl, Sprite07MapX
+	ld hl, wShadowOAMSprite07XCoord
 	ld a, $03
 	add 4; wispnote - We need to offset coordinates by 4
 	ld [hl], a
