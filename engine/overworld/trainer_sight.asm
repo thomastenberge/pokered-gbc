@@ -89,8 +89,9 @@ TrainerWalkUpToPlayer::
 	jr .facingRight
 .facingDown
 	ld a, [wTrainerScreenY]
+	add 4
 	ld b, a
-	ld a, $3c           ; (fixed) player screen Y pos
+	ld a, $3c + $04           ; (fixed) player screen Y pos
 	call CalcDifference
 	cp $10              ; trainer is right above player
 	ret z
@@ -208,8 +209,9 @@ TrainerEngage:
 	jr .noEngage
 .linedUpX
 	ld a, [wTrainerScreenY]        ; sprite screen Y pos
+	add 4
 	ld b, a
-	ld a, $3c            ; (fixed) player Y position
+	ld a, $3c + $04           ; (fixed) player Y position
 	call CalcDifference  ; calc distance
 	jr z, .noEngage      ; exact same position as player
 	call CheckSpriteCanSeePlayer
