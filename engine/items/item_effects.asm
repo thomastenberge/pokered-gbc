@@ -1526,6 +1526,11 @@ ItemUseEscapeRope:
 	ld a, [wCurMap]
 	cp AGATHAS_ROOM
 	jr z, .notUsable
+	;joenote - added from pokeyellow; do not allow in Bill's house or the Fan Club
+	cp BILLS_HOUSE
+	jr z, .notUsable
+	cp POKEMON_FAN_CLUB
+	jr z, .notUsable
 	ld a, [wCurMapTileset]
 	ld b, a
 	ld hl, EscapeRopeTilesets
