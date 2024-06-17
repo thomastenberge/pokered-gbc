@@ -15,6 +15,18 @@ VictoryRoad3FCheckBoulderEventScript:
 	ret z
 	CheckEventHL EVENT_VICTORY_ROAD_3_BOULDER_ON_SWITCH1
 	ret z
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; wispnote - If the switch is activated place the boulder in switch's coordinates.
+; Sprite07 indexes the first boulder, and ($03, $05) are the first swtich's coordinates.
+	ld hl, Sprite07MapY
+	ld a, $05
+	add 4; wispnote - We need to offset coordinates by 4
+	ld [hl], a
+	ld hl, Sprite07MapX
+	ld a, $03
+	add 4; wispnote - We need to offset coordinates by 4
+	ld [hl], a
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
 	ld a, $1d
 	ld [wNewTileBlockID], a
 	lb bc, 5, 3
@@ -42,6 +54,8 @@ VictoryRoad3FDefaultScript:
 	SetEvent EVENT_VICTORY_ROAD_3_BOULDER_ON_SWITCH1
 	ret
 .handle_hole
+	; wispnote - This event signifies that a boulder was thrown through a hole;
+	; it is not realted to any switch.
 	CheckAndSetEvent EVENT_VICTORY_ROAD_3_BOULDER_ON_SWITCH2
 	jr nz, .check_switch_hole
 	ld a, HS_VICTORY_ROAD_3F_BOULDER
