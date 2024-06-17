@@ -5,11 +5,14 @@ MtMoonB2F_Script:
 	ld a, [wMtMoonB2FCurScript]
 	call ExecuteCurMapScriptInTable
 	ld [wMtMoonB2FCurScript], a
+;joenote - Intent here is probably to keep encounters from ruining the moment of choosing your fossil prize	
 	CheckEvent EVENT_BEAT_MT_MOON_EXIT_SUPER_NERD
 	ret z
 	ld hl, MtMoonB2FFossilAreaCoords
 	call ArePlayerCoordsInArray
 	jr nc, .enable_battles
+	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
+	ret nz	;let's keep encounters on once the big moment is over
 	ld hl, wd72e
 	set 4, [hl]
 	ret
@@ -69,9 +72,11 @@ MtMoonB2FDefaultScript:
 	jp DisplayTextID
 
 MtMoonB2FCheckGotAFossil:
-	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
-	jp z, CheckFightingMapTrainers
-	ret
+;joenote - Half-baked idea to make the rocket grunts turn off like trainers in a gym. Remove for dungeon consistency.
+;	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
+;	jp z, CheckFightingMapTrainers
+;	ret
+	jp CheckFightingMapTrainers
 
 MtMoonB2FDefeatedSuperNerdScript:
 	ld a, [wIsInBattle]
