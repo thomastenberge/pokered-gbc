@@ -138,11 +138,12 @@ UpdateNPCSprite:
 	ld hl, wMapSpriteData
 	add l
 	ld l, a
-;;;;;;;;;;; FIXED: Account for carry
-	jr nc, .nc 
+;joenote - Increment H if A overflows. Otherwise H will hold $D4 instead of $D5 like it should.
+;This fixes some issues with the 15th map object.
+	jr nc, .no_carry
 	inc h
-.nc
-;;;;;;;;;;;	
+.no_carry
+
 	ld a, [hl]        ; read movement byte 2
 	ld [wCurSpriteMovement2], a
 	ld h, HIGH(wSpriteStateData1)
