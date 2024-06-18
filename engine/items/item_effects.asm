@@ -266,7 +266,7 @@ ItemUseBall:
 	cp SAFARI_BALL  ; Instead of great balls being different from all others, it is now safari balls.
 	ld a, 12 		; A lower ball factor helps catch pokemon that have fuller HP, so this was probably
 	jr nz, .skip1	; intended for the safari zone, since pokemon there can't be weakened.
-	ld a, 3
+	ld a, 4
 
 .skip1
 ; Note that the results of all division operations are floored.
