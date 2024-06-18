@@ -125,12 +125,12 @@ CeladonGymErikaText:
 	ld hl, .ReceivedRainbowBadgeText
 	ld de, .ReceivedRainbowBadgeText
 	call SaveEndBattleTextPointers
+	ld a, $4
+	ld [wGymLeaderNo], a
 	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
-	ld a, $4
-	ld [wGymLeaderNo], a
 	ld a, SCRIPT_CELADONGYM_ERIKA_POST_BATTLE
 	ld [wCeladonGymCurScript], a
 	ld [wCurMapScript], a
@@ -143,6 +143,7 @@ CeladonGymErikaText:
 
 .ReceivedRainbowBadgeText:
 	text_far _CeladonGymErikaReceivedRainbowBadgeText
+	sound_get_key_item ;joenote - play an unused sfx instead (triggered by playing GET_KEY_ITEM in battle)
 	text_end
 
 .PostBattleAdviceText:

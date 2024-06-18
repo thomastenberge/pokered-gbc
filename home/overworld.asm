@@ -199,21 +199,25 @@ OverworldLoopLessDelay::
 	call CollisionCheckOnLand
 	jr nc, .noCollision
 ; collision occurred
+;joenote - going to adjust how the thud sfx is played
 	push hl
 	ld hl, wd736
 	bit 2, [hl] ; standing on warp flag
 	pop hl
-	jp z, OverworldLoop
+;	jp z, OverworldLoop
+	jp z, PlayThudAndLoop	
 ; collision occurred while standing on a warp
 	push hl
 	call ExtraWarpCheck ; sets carry if there is a potential to warp
 	pop hl
 	jp c, CheckWarpsCollision
-	jp OverworldLoop
+;	jp OverworldLoop
+	jp PlayThudAndLoop	
 
 .surfing
 	call CollisionCheckOnWater
-	jp c, OverworldLoop
+;	jp c, OverworldLoop
+	jp c, PlayThudAndLoop
 
 .noCollision
 	ld a, $08
@@ -434,7 +438,8 @@ CheckWarpsCollision::
 	inc hl
 	dec c
 	jr nz, .loop
-	jp OverworldLoop
+;	jp OverworldLoop
+	jp PlayThudAndLoop	
 
 CheckWarpsNoCollisionRetry1::
 	inc hl
@@ -1110,12 +1115,12 @@ CollisionCheckOnLand::
 	jr c, .collision
 	call CheckTilePassable
 	jr nc, .noCollision
-.collision
-	ld a, [wChannelSoundIDs + CHAN5]
-	cp SFX_COLLISION ; check if collision sound is already playing
-	jr z, .setCarry
-	ld a, SFX_COLLISION
-	call PlaySound ; play collision sound (if it's not already playing)
+.collision ;joenote - consolidated into its own function
+;	ld a, [wChannelSoundIDs + CHAN5]
+;	cp SFX_COLLISION ; check if collision sound is already playing
+;	jr z, .setCarry
+;	ld a, SFX_COLLISION
+;	call PlaySound ; play collision sound (if it's not already playing)
 .setCarry
 	scf
 	ret
@@ -1788,12 +1793,12 @@ CollisionCheckOnWater::
 	cp c
 	jr z, .stopSurfing ; stop surfing if the tile is passable
 	jr .loop
-.collision
-	ld a, [wChannelSoundIDs + CHAN5]
-	cp SFX_COLLISION ; check if collision sound is already playing
-	jr z, .setCarry
-	ld a, SFX_COLLISION
-	call PlaySound ; play collision sound (if it's not already playing)
+.collision	;joenote - consolidated into its own function
+;	ld a, [wChannelSoundIDs + CHAN5]
+;	cp SFX_COLLISION ; check if collision sound is already playing
+;	jr z, .setCarry
+;	ld a, SFX_COLLISION
+;	call PlaySound ; play collision sound (if it's not already playing)
 .setCarry
 	scf
 	jr .done
@@ -2261,6 +2266,16 @@ ForceBikeOrSurf::
 	ld hl, LoadPlayerSpriteGraphics ; in bank 0
 	call Bankswitch
 	jp PlayDefaultMusic ; update map/player state?
+
+;joenote - consolidate the collision thud to its own place
+PlayThudAndLoop:
+	ld a, [wChannelSoundIDs + CHAN5]
+	cp SFX_COLLISION ; check if collision sound is already playing
+	jr z, .jump
+	ld a, SFX_COLLISION
+	call PlaySound ; play collision sound (if it's not already playing)
+.jump
+	jp OverworldLoop
 
 CheckForUserInterruption::
 ; Return carry if Up+Select+B, Start or A are pressed in c frames.

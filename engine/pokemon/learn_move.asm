@@ -209,7 +209,13 @@ OneTwoAndText:
 	text_far _OneTwoAndText
 	text_pause
 	text_asm
+;joenote - play a different SFX if in battle due to having a different audio bank
+	ld a, [wIsInBattle]
+	and a	
 	ld a, SFX_SWAP
+	jr z, .next
+	ld a, SFX_START_MENU
+.next
 	call PlaySoundWaitForCurrent
 	ld hl, PoofText
 	ret

@@ -235,12 +235,12 @@ ViridianGymGiovanniText:
 	ld hl, .ReceivedEarthBadgeText
 	ld de, .ReceivedEarthBadgeText
 	call SaveEndBattleTextPointers
+	ld a, $8
+	ld [wGymLeaderNo], a
 	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
-	ld a, $8
-	ld [wGymLeaderNo], a
 	ld a, SCRIPT_VIRIDIANGYM_GIOVANNI_POST_BATTLE
 	ld [wViridianGymCurScript], a
 .text_script_end
@@ -252,7 +252,7 @@ ViridianGymGiovanniText:
 
 .ReceivedEarthBadgeText:
 	text_far _ViridianGymGiovanniReceivedEarthBadgeText
-	sound_level_up ; probably supposed to play SFX_GET_ITEM_1 but the wrong music bank is loaded
+	sound_get_key_item ;joenote - play an unused sfx instead (triggered by playing GET_KEY_ITEM in battle)
 	text_end
 
 .PostBattleAdviceText:

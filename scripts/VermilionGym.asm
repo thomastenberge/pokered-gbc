@@ -133,12 +133,12 @@ VermilionGymLTSurgeText:
 	ld hl, VermilionGymLTSurgeReceivedThunderBadgeText
 	ld de, VermilionGymLTSurgeReceivedThunderBadgeText
 	call SaveEndBattleTextPointers
+	ld a, $3
+	ld [wGymLeaderNo], a
 	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
-	ld a, $3
-	ld [wGymLeaderNo], a
 	xor a
 	ldh [hJoyHeld], a
 	ld a, SCRIPT_VERMILIONGYM_LT_SURGE_AFTER_BATTLE
@@ -161,7 +161,7 @@ VermilionGymLTSurgeThunderBadgeInfoText:
 
 VermilionGymLTSurgeReceivedTM24Text:
 	text_far _VermilionGymLTSurgeReceivedTM24Text
-	sound_get_key_item
+	sound_get_item_1
 	text_far _TM24ExplanationText
 	text_end
 
@@ -171,6 +171,7 @@ VermilionGymLTSurgeTM24NoRoomText:
 
 VermilionGymLTSurgeReceivedThunderBadgeText:
 	text_far _VermilionGymLTSurgeReceivedThunderBadgeText
+	sound_get_key_item ;joenote - play an unused sfx instead (triggered by playing GET_KEY_ITEM in battle)
 	text_end
 
 VermilionGymGentlemanText:

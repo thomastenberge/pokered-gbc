@@ -126,12 +126,12 @@ SaffronGymSabrinaText:
 	ld hl, .ReceivedMarshBadgeText
 	ld de, .ReceivedMarshBadgeText
 	call SaveEndBattleTextPointers
+	ld a, $6
+	ld [wGymLeaderNo], a
 	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
-	ld a, $6
-	ld [wGymLeaderNo], a
 	ld a, SCRIPT_SAFFRONGYM_SABRINA_POST_BATTLE
 	ld [wSaffronGymCurScript], a
 .done
@@ -143,6 +143,7 @@ SaffronGymSabrinaText:
 
 .ReceivedMarshBadgeText:
 	text_far _SaffronGymSabrinaReceivedMarshBadgeText
+	;joenote - now plays an unused item sfx for getting a badge
 	sound_get_key_item ; actually plays the second channel of SFX_BALL_POOF due to the wrong music bank being loaded
 	text_promptbutton
 	text_end

@@ -462,6 +462,7 @@ AIPlayRestoringSFX:
 	jp PlaySoundWaitForCurrent
 
 AIUseFullRestore:
+	call AIPlayRestoringSFX
 	call AICureStatus
 	ld a, FULL_RESTORE
 	ld [wAIItem], a
@@ -487,18 +488,21 @@ AIUseFullRestore:
 
 AIUsePotion:
 ; enemy trainer heals his monster with a potion
+	call AIPlayRestoringSFX
 	ld a, POTION
 	ld b, 20
 	jr AIRecoverHP
 
 AIUseSuperPotion:
 ; enemy trainer heals his monster with a super potion
+	call AIPlayRestoringSFX
 	ld a, SUPER_POTION
 	ld b, 50
 	jr AIRecoverHP
 
 AIUseHyperPotion:
 ; enemy trainer heals his monster with a hyper potion
+	call AIPlayRestoringSFX
 	ld a, HYPER_POTION
 	ld b, 200
 	; fallthrough

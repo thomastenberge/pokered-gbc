@@ -1765,6 +1765,19 @@ Audio2_PlaySound::
 Audio2_CryRet:
 	sound_ret
 
+Music_GetKeyItemInBattle::	;joenote - if SFX_GET_KEY_ITEM plays in battle, play a previously unused SFX
+	; begin playing the "caught mon" sound effect
+	ld a, SFX_CAUGHT_MON
+	call PlaySoundWaitForCurrent
+	; then immediately overwrite the channel pointers
+	ld hl, wChannelCommandPointers + CHAN5 * 2
+	ld de, SFX_UnusedFanfare_Ch5
+	call Audio2_OverwriteChannelPointer
+	ld de, SFX_UnusedFanfare_Ch6
+	call Audio2_OverwriteChannelPointer
+	ld de, SFX_UnusedFanfare_Ch7
+	jp Audio2_OverwriteChannelPointer
+
 Audio2_HWChannelBaseAddresses:
 ; the low bytes of each HW channel's base address
 	db HW_CH1_BASE, HW_CH2_BASE, HW_CH3_BASE, HW_CH4_BASE ; channels 0-3

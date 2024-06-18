@@ -125,12 +125,12 @@ FuchsiaGymKogaText:
 	ld hl, .ReceivedSoulBadgeText
 	ld de, .ReceivedSoulBadgeText
 	call SaveEndBattleTextPointers
+	ld a, $5
+	ld [wGymLeaderNo], a
 	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
-	ld a, $5
-	ld [wGymLeaderNo], a
 	xor a
 	ldh [hJoyHeld], a
 	ld a, SCRIPT_FUCHSIAGYM_KOGA_POST_BATTLE
@@ -144,6 +144,7 @@ FuchsiaGymKogaText:
 
 .ReceivedSoulBadgeText:
 	text_far _FuchsiaGymKogaReceivedSoulBadgeText
+	sound_get_key_item ;joenote - play an unused sfx instead (triggered by playing GET_KEY_ITEM in battle)
 	text_end
 
 .PostBattleAdviceText:
@@ -156,7 +157,8 @@ FuchsiaGymKogaSoulBadgeInfoText:
 
 FuchsiaGymKogaReceivedTM06Text:
 	text_far _FuchsiaGymKogaReceivedTM06Text
-	sound_get_key_item
+	; sound_get_key_item ;joenote - wrong SFX played
+	sound_get_item_1
 	text_far _FuchsiaGymKogaTM06ExplanationText
 	text_end
 

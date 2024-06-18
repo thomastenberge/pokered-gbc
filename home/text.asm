@@ -503,7 +503,7 @@ TextCommand_PAUSE::
 	pop hl
 	jp NextTextCommand
 
-TextCommand_SOUND::
+TextCommand_SOUND:: ;joenote - modified to make SFX_GET_KEY_ITEM play a previously unused sound effect in battle (for getting a badge)
 ; play a sound effect from TextCommandSounds
 	pop hl
 	push bc
@@ -515,25 +515,26 @@ TextCommand_SOUND::
 .loop
 	ld a, [hli]
 	cp b
-	jr z, .play
+	jr z, .matchFound
 	inc hl
 	jr .loop
-
-.play
+.matchFound
 	cp TX_SOUND_CRY_NIDORINO
 	jr z, .pokemonCry
 	cp TX_SOUND_CRY_PIDGEOT
 	jr z, .pokemonCry
-	; cp TX_SOUND_CRY_DEWGONG
 	cp TX_SOUND_CRY_NIDORINA
 	jr z, .pokemonCry
+	cp TX_SOUND_GET_KEY_ITEM
+	jr z, .keyitem
+.playnormally	
 	ld a, [hl]
 	call PlaySound
 	call WaitForSoundToFinish
+.finishnormally
 	pop hl
 	pop bc
 	jp NextTextCommand
-
 .pokemonCry
 	push de
 	ld a, [hl]
@@ -542,6 +543,20 @@ TextCommand_SOUND::
 	pop hl
 	pop bc
 	jp NextTextCommand
+.keyitem
+	push de
+	ld a, [wAudioROMBank]
+	cp BANK(Audio2_UpdateMusic)
+	pop de
+	jr nz, .playnormally	;don't do anything special if we're not in audio bank 2
+	push de
+	callba Music_GetKeyItemInBattle
+.musicWaitLoop ; wait for music to finish playing
+	ld a, [wChannelSoundIDs + CHAN7]
+	and a ; music off?
+	jr nz, .musicWaitLoop
+	pop de
+	jr .finishnormally
 
 TextCommandSounds::
 	db TX_SOUND_GET_ITEM_1,           SFX_GET_ITEM_1 ; actually plays SFX_LEVEL_UP when the battle music engine is loaded
@@ -551,10 +566,11 @@ TextCommandSounds::
 	db TX_SOUND_GET_ITEM_2,           SFX_GET_ITEM_2
 	db TX_SOUND_GET_KEY_ITEM,         SFX_GET_KEY_ITEM
 	db TX_SOUND_DEX_PAGE_ADDED,       SFX_DEX_PAGE_ADDED
-	db TX_SOUND_CRY_NIDORINO,         NIDORINO ; used in OakSpeech
+	db TX_SOUND_CRY_NIDORINO,         NIDORINO ; used in OakSpeech (joenote - corrected from Nidorina)
 	db TX_SOUND_CRY_PIDGEOT,          PIDGEOT  ; used in SaffronCityPidgeotText
 	; db TX_SOUND_CRY_DEWGONG,          DEWGONG  ; unused
 	db TX_SOUND_CRY_NIDORINA,         NIDORINA   ; use this instead of DEWGONG
+												 ; used in OakSpeech if Player choose female character
 
 TextCommand_DOTS::
 ; wait for button press or 30 frames while printing "…"s
