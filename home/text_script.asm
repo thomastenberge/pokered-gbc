@@ -97,6 +97,11 @@ AfterDisplayingTextID::
 	and a
 	jr nz, HoldTextDisplayOpen
 	call WaitForTextScrollButtonPress ; wait for a button press after displaying all the text
+	; The fall-through to HoldTextDisplayOpen means that the text waits until A button is pressed,
+	; but then it closes the text only upon the button's release. 
+	jr CloseTextDisplay	;joenote - this will make the text close when pressing A down instead of releasing it
+
+
 
 ; loop to hold the dialogue box open as long as the player keeps holding down the A button
 HoldTextDisplayOpen::
