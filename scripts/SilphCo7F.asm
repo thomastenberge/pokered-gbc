@@ -216,6 +216,14 @@ SilphCo7FRivalStartBattleScript:
 	ld a, $9
 .set_trainer_no
 	ld [wTrainerNo], a
+
+	;joenote - moved this up here so the rival faces the correct way after battle
+	ld a, SILPHCO7F_RIVAL
+	ldh [hSpriteIndex], a
+	ld a, SPRITE_FACING_UP
+	ldh [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
+
 	ld a, SCRIPT_SILPHCO7F_RIVAL_AFTER_BATTLE
 	jp SilphCo7FSetCurScript
 
@@ -228,11 +236,11 @@ SilphCo7FRivalAfterBattleScript:
 	SetEvent EVENT_BEAT_SILPH_CO_RIVAL
 	ld a, PLAYER_DIR_DOWN
 	ld [wPlayerMovingDirection], a
-	ld a, SILPHCO7F_RIVAL
-	ldh [hSpriteIndex], a
-	ld a, SPRITE_FACING_UP
-	ldh [hSpriteFacingDirection], a
-	call SetSpriteFacingDirectionAndDelay
+;	ld a, SILPHCO7F_RIVAL
+;	ldh [hSpriteIndex], a
+;	ld a, SPRITE_FACING_UP
+;	ldh [hSpriteFacingDirection], a
+;	call SetSpriteFacingDirectionAndDelay
 	ld a, TEXT_SILPHCO7F_RIVAL_GOOD_LUCK_TO_YOU
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
