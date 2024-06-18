@@ -1,5 +1,5 @@
 PokemonMansion2FWildMons:
-	def_grass_wildmons 10 ; encounter rate
+	def_grass_wildmons 8 ; encounter rate
 IF DEF(_RED)
 	db 32, GROWLITHE
 	db 34, KOFFING

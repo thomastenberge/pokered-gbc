@@ -1,5 +1,5 @@
 MtMoonB1FWildMons:
-	def_grass_wildmons 10 ; encounter rate
+	def_grass_wildmons 7 ; encounter rate
 	db  8, ZUBAT
 	db  7, ZUBAT
 	db  7, GEODUDE

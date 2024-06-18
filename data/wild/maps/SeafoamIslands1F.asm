@@ -1,5 +1,5 @@
 SeafoamIslands1FWildMons:
-	def_grass_wildmons 15 ; encounter rate
+	def_grass_wildmons 8 ; encounter rate
 	db 30, SEEL
 IF DEF(_RED)
 	db 30, SLOWPOKE
