@@ -14,7 +14,8 @@ ViridianGym_Script:
 	db "VIRIDIAN CITY@"
 
 .LeaderName:
-	db "GIOVANNI@"
+;	db "GIOVANNI@"	;joenote - let's remove this funny nonsense spoiler
+	db "---@"
 
 ViridianGymResetScripts:
 	xor a
