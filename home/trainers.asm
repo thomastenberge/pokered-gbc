@@ -127,10 +127,22 @@ IF DEF(_DEBUG)
 	call DebugPressedOrHeldB
 	jr nz, .trainerNotEngaging
 ENDC
+
+;joenote -  This allows for the trainer escape glitch to occur. 
+;		    The player has to enter a wild battle on the exact space that would also result in being spotted.
+;			The player must then lose the wild battle and black out.
+;			This function will run regardless and the player will black out and escape being spotted.
+
+	;this will plug-up the escape glitch
+	ld a, [wIsInBattle]
+	cp $ff		;If the player has lost the last battle (blacking out), then don't even check and just exit.
+	jr z, .skip_and_exit
+
 	call CheckForEngagingTrainers
 	ld a, [wSpriteIndex]
 	cp $ff
 	jr nz, .trainerEngaging
+.skip_and_exit	
 IF DEF(_DEBUG)
 .trainerNotEngaging
 ENDC
