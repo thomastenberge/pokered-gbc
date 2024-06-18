@@ -22,6 +22,16 @@ _ViridianCityGambler1GymLeaderReturnedText::
 	line "LEADER returned!"
 	done
 
+_ViridianCityGambler1GymGoneForGoodText::
+	text "VIRIDIAN GYM's"
+	line "LEADER has left"
+	cont "once again."
+
+	para "I think, he might"
+	line "be gone for good"
+	cont "this time..."
+	done
+
 _ViridianCityYoungster2YouWantToKnowAboutText::
 	text "You want to know"
 	line "about the 2 kinds"

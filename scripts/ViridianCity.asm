@@ -147,18 +147,40 @@ ViridianCityYoungster1Text:
 	text_far _ViridianCityYoungster1Text
 	text_end
 
+;ViridianCityGambler1Text:
+;	text_asm
+;	ld a, [wObtainedBadges]
+;	cp ~(1 << BIT_EARTHBADGE)
+;	ld hl, .GymLeaderReturnedText
+;	jr z, .print_text
+;	CheckEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
+;	jr nz, .print_text
+;	ld hl, .GymAlwaysClosedText
+;.print_text
+;	call PrintText
+;	jp TextScriptEnd
+
 ViridianCityGambler1Text:
 	text_asm
+	CheckEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
+	jr z, .checkbadges
+	ld hl, .GoneForGoodText ; has beaten Giovanni
+	jp .print_text
+
+.checkbadges
 	ld a, [wObtainedBadges]
 	cp ~(1 << BIT_EARTHBADGE)
-	ld hl, .GymLeaderReturnedText
+	ld hl, .GymLeaderReturnedText ; has not yet beaten Giovanni, but has seven badges
 	jr z, .print_text
-	CheckEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
-	jr nz, .print_text
 	ld hl, .GymAlwaysClosedText
+
 .print_text
 	call PrintText
 	jp TextScriptEnd
+
+.GoneForGoodText:
+	text_far _ViridianCityGambler1GymGoneForGoodText
+	text_end
 
 .GymAlwaysClosedText:
 	text_far _ViridianCityGambler1GymAlwaysClosedText
