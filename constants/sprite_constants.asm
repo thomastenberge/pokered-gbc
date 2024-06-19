@@ -49,7 +49,7 @@
 	const SPRITE_WARDEN                  ; $2d
 	const SPRITE_CAPTAIN                 ; $2e
 	const SPRITE_FISHER                  ; $2f
-	const SPRITE_KOGA                    ; $30
+	const SPRITE_BLACKBELT               ; $30
 	const SPRITE_GUARD                   ; $31
 	const SPRITE_UNUSED_GUARD            ; $32
 	const SPRITE_MOM                     ; $33
@@ -69,18 +69,19 @@
 	const SPRITE_SABRINA                 ; $41
 	const SPRITE_BLAINE                  ; $42
 	const SPRITE_LAPRAS                  ; $43
-	const SPRITE_SEEL                    ; $44
+	const SPRITE_BILL                    ; $44
+	const SPRITE_SEEL                    ; $45
 DEF FIRST_STILL_SPRITE EQU const_value
-	const SPRITE_POKE_BALL               ; $45
-	const SPRITE_FOSSIL                  ; $46
-	const SPRITE_BOULDER                 ; $47
-	const SPRITE_PAPER                   ; $48
-	const SPRITE_POKEDEX                 ; $49
-	const SPRITE_CLIPBOARD               ; $4a
-	const SPRITE_SNORLAX                 ; $4b
-	const SPRITE_UNUSED_OLD_AMBER        ; $4c
-	const SPRITE_OLD_AMBER               ; $4d
-	const SPRITE_UNUSED_GAMBLER_ASLEEP_1 ; $4e
-	const SPRITE_UNUSED_GAMBLER_ASLEEP_2 ; $4f
-	const SPRITE_GAMBLER_ASLEEP          ; $50
+	const SPRITE_POKE_BALL               ; $46
+	const SPRITE_FOSSIL                  ; $47
+	const SPRITE_BOULDER                 ; $48
+	const SPRITE_PAPER                   ; $49
+	const SPRITE_POKEDEX                 ; $4a
+	const SPRITE_CLIPBOARD               ; $4b
+	const SPRITE_SNORLAX                 ; $4c
+	const SPRITE_UNUSED_OLD_AMBER        ; $4d
+	const SPRITE_OLD_AMBER               ; $4e
+	const SPRITE_UNUSED_GAMBLER_ASLEEP_1 ; $4f
+	const SPRITE_UNUSED_GAMBLER_ASLEEP_2 ; $50
+	const SPRITE_GAMBLER_ASLEEP          ; $51
 DEF NUM_SPRITES EQU const_value - 1

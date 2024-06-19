@@ -54,7 +54,7 @@ SpriteSheetPointerTable:
 	overworld_sprite WardenSprite, 12           ; SPRITE_WARDEN
 	overworld_sprite CaptainSprite, 12          ; SPRITE_CAPTAIN
 	overworld_sprite FisherSprite, 12           ; SPRITE_FISHER
-	overworld_sprite KogaSprite, 12             ; SPRITE_KOGA
+	overworld_sprite BlackbeltSprite, 12        ; SPRITE_BLACKBELT
 	overworld_sprite GuardSprite, 12            ; SPRITE_GUARD
 	overworld_sprite GuardSprite, 12            ; SPRITE_UNUSED_GUARD
 	overworld_sprite MomSprite, 12              ; SPRITE_MOM
@@ -70,10 +70,11 @@ SpriteSheetPointerTable:
 	overworld_sprite MistySprite, 12            ; SPRITE_MISTY
 	overworld_sprite LtSurgeSprite, 12          ; SPRITE_LTSURGE
 	overworld_sprite ErikaSprite, 12            ; SPRITE_ERIKA
-	overworld_sprite KogaaltSprite, 12          ; SPRITE_KOGAALT
+	overworld_sprite KogaSprite, 12             ; SPRITE_KOGA
 	overworld_sprite SabrinaSprite, 12          ; SPRITE_SABRINA
 	overworld_sprite BlaineSprite, 12           ; SPRITE_BLAINE
 	overworld_sprite LaprasSprite, 12			; SPRITE_LAPRAS
+	overworld_sprite BillSprite, 12			    ; SPRITE_BILL
 	overworld_sprite SeelSprite, 12             ; SPRITE_SEEL
 	overworld_sprite PokeBallSprite, 4          ; SPRITE_POKE_BALL
 	overworld_sprite FossilSprite, 4            ; SPRITE_FOSSIL
