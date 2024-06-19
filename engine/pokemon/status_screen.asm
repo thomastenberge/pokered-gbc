@@ -403,16 +403,16 @@ ENDC
 	hlcoord 9, 3
 	ld de, StatusScreenExpText
 	call PlaceString
+	coord hl, 14, 6	;joenote - make things a little neater
+	ld [hl], $70 ; 1-tile "to"
 	ld a, [wLoadedMonLevel]
 	push af
 	cp MAX_LEVEL
 	jr z, .Level100
 	inc a
 	ld [wLoadedMonLevel], a ; Increase temporarily if not 100
-.Level100
-	hlcoord 14, 6
-	ld [hl], "<to>"
 	inc hl
+.Level100
 	inc hl
 	call PrintLevel
 	pop af
