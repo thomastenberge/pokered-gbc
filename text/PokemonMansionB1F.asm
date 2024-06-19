@@ -30,7 +30,7 @@ _PokemonMansionB1FScientistAfterBattleText::
 
 ;joenote - edited text to be closer to original japanese context
 _PokemonMansionB1FDiaryText::
-	text "Diary; Sept. 1"
+	text "Diary: Sept. 1"
 	line "MEWTWO is far too"
 	cont "powerful."
 
