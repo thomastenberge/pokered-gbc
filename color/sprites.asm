@@ -456,7 +456,7 @@ SpritePaletteAssignments: ; Characters on the overworld
 	db SPR_PAL_RANDOM
 
 	; 0x30: SPRITE_BLACKBELT
-	db SPR_PAL_RANDOM
+	db SPR_PAL_BROWN
 
 	; 0x31: SPRITE_GUARD ($30)
 	db SPR_PAL_BLUE
@@ -498,7 +498,7 @@ SpritePaletteAssignments: ; Characters on the overworld
 	db SPR_PAL_ORANGE
 
 	; 0x3e: SPRITE_LTSURGE
-	db SPR_PAL_GREEN
+	db SPR_PAL_BROWN
 
 	; 0x3f: SPRITE_ERIKA
 	db SPR_PAL_GREEN
