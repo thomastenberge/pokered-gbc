@@ -7,7 +7,7 @@ TypeNames:
 	dw .Poison
 	dw .Ground
 	dw .Rock
-	dw .Bird
+	dw .Typeless
 	dw .Bug
 	dw .Ghost
 
@@ -37,7 +37,7 @@ ENDR
 .Ice:      db "ICE@"
 .Ground:   db "GROUND@"
 .Rock:     db "ROCK@"
-.Bird:     db "TYPELESS@"	;joenote - Bird type will be used as a neutral typless dummy type for Struggle
+.Typeless: db "NONE@"
 .Bug:      db "BUG@"
 .Ghost:    db "GHOST@"
 .Dragon:   db "DRAGON@"
