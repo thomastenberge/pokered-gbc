@@ -1006,6 +1006,7 @@ MoltresEvosMoves:
 	db 0
 ; Learnset
 	db 51, LEER
+	db 51, FLAMETHROWER
 	db 55, AGILITY
 	db 60, SKY_ATTACK
 	db 0
