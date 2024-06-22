@@ -237,9 +237,15 @@ PartyMenuMessagePointers:
 	dw PartyMenuUseTMText
 	dw PartyMenuSwapMonText
 	dw PartyMenuItemUseText
+	dw PartyMenuEmptyText
 
 PartyMenuNormalText:
 	text_far _PartyMenuNormalText
+	text_end
+
+
+PartyMenuEmptyText:
+	text_far _PartyMenuEmptyText
 	text_end
 
 PartyMenuItemUseText:
