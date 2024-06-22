@@ -143,7 +143,14 @@ UpdateHPBar_AnimateHPBar:
 	push af
 	push de
 	ld d, $6
+;;;;;;;;;; shinpokerednote: FIXED: Vblank can happen during DrawHPBar which can cause incorrect hp bar tiles to appear for 1 frame.
+;;;;;;;;;; Deactivate Auto BG Transfer when drawing the HP bar to prevent this.
+	xor a
+	ldh [hAutoBGTransferEnabled], a
 	call DrawHPBarWithColor ; HAX: call changed to update color as well
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a
+;;;;;;;;;;	
 	;ld c, 2
 	ld c, 1		;joenote - speed up HP bar animation
 	call DelayFrames
