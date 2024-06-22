@@ -54,10 +54,9 @@ SilphCo3F_UnlockedDoorEventScript:
 Load3FCheckCardKeyText:
 	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
 	ret z
-	ld a, 5
+	ld a, TEXT_SILPHCO3F_CARD_KEY_DONE
 	ldh [hSpriteIndexOrTextID], a
-	call DisplayTextID
-	ret
+	jp DisplayTextID
 
 SilphCo3Text5:
 	text_asm
@@ -76,7 +75,7 @@ SilphCo3F_TextPointers:
 	dw_const SilphCo3FRocketText,       TEXT_SILPHCO3F_ROCKET
 	dw_const SilphCo3FScientistText,    TEXT_SILPHCO3F_SCIENTIST
 	dw_const PickUpItemText,            TEXT_SILPHCO3F_HYPER_POTION
-	dw SilphCo3Text5
+	dw_const SilphCo3Text5,             TEXT_SILPHCO3F_CARD_KEY_DONE
 
 SilphCo3TrainerHeaders:
 	def_trainers 2

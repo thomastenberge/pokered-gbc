@@ -106,10 +106,9 @@ SilphCo7F_UnlockedDoorEventScript:
 Load7FCheckCardKeyText:
 	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
 	ret z
-	ld a, 16
+	ld a, TEXT_SILPHCO7F_CARD_KEY_DONE
 	ldh [hSpriteIndexOrTextID], a
-	call DisplayTextID
-	ret
+	jp DisplayTextID
 
 SilphCo7Text16:
 	text_asm
@@ -304,7 +303,7 @@ SilphCo7F_TextPointers:
 	dw_const SilphCo7FRivalWaitedHereText,    TEXT_SILPHCO7F_RIVAL_WAITED_HERE
 	dw_const SilphCo7FRivalDefeatedText,      TEXT_SILPHCO7F_RIVAL_DEFEATED
 	dw_const SilphCo7FRivalGoodLuckToYouText, TEXT_SILPHCO7F_RIVAL_GOOD_LUCK_TO_YOU
-	dw SilphCo7Text16
+	dw_const SilphCo7Text16,                  TEXT_SILPHCO7F_CARD_KEY_DONE
 
 SilphCo7TrainerHeaders:
 	def_trainers 5

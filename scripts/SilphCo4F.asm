@@ -90,10 +90,9 @@ SilphCo4FUnlockedDoorEventScript:
 Load4FCheckCardKeyText:
 	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
 	ret z
-	ld a, 8
+	ld a, TEXT_SILPHCO4F_CARD_KEY_DONE
 	ldh [hSpriteIndexOrTextID], a
-	call DisplayTextID
-	ret
+	jp DisplayTextID
 
 SilphCo4Text8:
 	text_asm
@@ -115,7 +114,7 @@ SilphCo4F_TextPointers:
 	dw_const PickUpItemText,            TEXT_SILPHCO4F_FULL_HEAL
 	dw_const PickUpItemText,            TEXT_SILPHCO4F_MAX_REVIVE
 	dw_const PickUpItemText,            TEXT_SILPHCO4F_ESCAPE_ROPE
-	dw SilphCo4Text8
+	dw_const SilphCo4Text8,             TEXT_SILPHCO4F_CARD_KEY_DONE
 
 SilphCo4TrainerHeaders:
 	def_trainers 2

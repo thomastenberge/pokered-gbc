@@ -70,10 +70,9 @@ SilphCo5F_SetUnlockedSilphCoDoorsScript:
 Load5FCheckCardKeyText:
 	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
 	ret z
-	ld a, 12
+	ld a, TEXT_SILPHCO5F_CARD_KEY_DONE
 	ldh [hSpriteIndexOrTextID], a
-	call DisplayTextID
-	ret
+	jp DisplayTextID
 
 SilphCo5Text12:
 	text_asm
@@ -99,7 +98,7 @@ SilphCo5F_TextPointers:
 	dw_const SilphCo5FPokemonReport1Text, TEXT_SILPHCO5F_POKEMON_REPORT1
 	dw_const SilphCo5FPokemonReport2Text, TEXT_SILPHCO5F_POKEMON_REPORT2
 	dw_const SilphCo5FPokemonReport3Text, TEXT_SILPHCO5F_POKEMON_REPORT3
-	dw SilphCo5Text12
+	dw_const SilphCo5Text12,              TEXT_SILPHCO5F_CARD_KEY_DONE
 
 SilphCo5TrainerHeaders:
 	def_trainers 2

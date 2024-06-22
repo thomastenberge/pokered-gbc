@@ -124,10 +124,9 @@ SilphCo9F_SetUnlockedSilphCoDoorsScript:
 Load9FCheckCardKeyText:
 	CheckEvent EVENT_ALL_CARD_KEY_DOORS_OPENED
 	ret z
-	ld a, 5
+	ld a, TEXT_SILPHCO9F_CARD_KEY_DONE
 	ldh [hSpriteIndexOrTextID], a
-	call DisplayTextID
-	ret
+	jp DisplayTextID
 
 SilphCo9Text5:
 	text_asm
@@ -147,7 +146,7 @@ SilphCo9F_TextPointers:
 	dw_const SilphCo9FRocket1Text,   TEXT_SILPHCO9F_ROCKET1
 	dw_const SilphCo9FScientistText, TEXT_SILPHCO9F_SCIENTIST
 	dw_const SilphCo9FRocket2Text,   TEXT_SILPHCO9F_ROCKET2
-	dw SilphCo9Text5
+	dw_const SilphCo9Text5,          TEXT_SILPHCO9F_CARD_KEY_DONE
 
 SilphCo9TrainerHeaders:
 	def_trainers 2
