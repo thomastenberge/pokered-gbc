@@ -6720,29 +6720,31 @@ ApplyBadgeStatBoosts:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
-	ld a, [wObtainedBadges]
-	ld b, a
-	ld hl, wBattleMonAttack
-	ld c, $4
 ; the boost is applied for badges whose bit position is even
 ; the order of boosts matches the order they are laid out in RAM
 ; Boulder (bit 0) - attack
-; Thunder (bit 2) - defense
-; Soul (bit 4) - speed
+; Thunder (bit 2) - speed
+; Soul (bit 4) - defense
 ; Volcano (bit 6) - special
-.loop
-	srl b
-	call c, .applyBoostToStat
-	inc hl
-	inc hl
-	srl b
-	dec c
-	jr nz, .loop
+	ld a, [wObtainedBadges]
+	ld b, a
+	ld hl, wBattleMonAttack
+	bit BIT_BOULDERBADGE, b
+	call nz, ApplyBoostToStat
+	ld hl, wBattleMonSpeed
+	bit BIT_THUNDERBADGE, b
+	call nz, ApplyBoostToStat
+	ld hl, wBattleMonDefense
+	bit BIT_SOULBADGE, b
+	call nz, ApplyBoostToStat
+	ld hl, wBattleMonSpecial
+	bit BIT_VOLCANOBADGE, b
+	call nz, ApplyBoostToStat
 	ret
 
 ; multiply stat at hl by 1.125
 ; cap stat at MAX_STAT_VALUE
-.applyBoostToStat
+ApplyBoostToStat:
 	ld a, [hli]
 	ld d, a
 	ld e, [hl]
