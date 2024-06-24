@@ -689,17 +689,17 @@ AICheckIfHPBelowFraction:
 	jr .return
 .not_one
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	ldh [hDivisor], a
+	ld [H_DIVISOR], a
 	ld hl, wEnemyMonMaxHP
 	ld a, [hli]
-	ldh [hDividend], a
+	ld [H_DIVIDEND], a
 	ld a, [hl]
-	ldh [hDividend + 1], a
+	ld [H_DIVIDEND + 1], a
 	ld b, 2
 	call Divide
-	ldh a, [hQuotient + 3]
+	ld a, [H_QUOTIENT + 3]
 	ld c, a
-	ldh a, [hQuotient + 2]
+	ld a, [H_QUOTIENT + 2]
 	ld b, a
 	ld hl, wEnemyMonHP + 1
 	ld a, [hld]
@@ -714,7 +714,7 @@ AICheckIfHPBelowFraction:
 .return	;joenote - consolidating returns with the stack
 	pop de
 	pop bc
-	pop hl	
+	pop hl
 	ret
 
 AIUseXAttack:
