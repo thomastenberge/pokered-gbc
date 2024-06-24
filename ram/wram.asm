@@ -1781,7 +1781,15 @@ wRivalName:: ds NAME_LENGTH
 wOptions:: db
 
 wObtainedBadges:: flag_array NUM_BADGES
-
+	flag_array 8
+;	BIT_BOULDERBADGE ; 0
+;	BIT_CASCADEBADGE ; 1
+;	BIT_THUNDERBADGE ; 2
+;	BIT_RAINBOWBADGE ; 3
+;	BIT_SOULBADGE    ; 4
+;	BIT_MARSHBADGE   ; 5
+;	BIT_VOLCANOBADGE ; 6
+;	BIT_EARTHBADGE   ; 7
 	ds 1
 
 ; bit 0: If 0, limit the delay to 1 frame. Note that this has no effect if
