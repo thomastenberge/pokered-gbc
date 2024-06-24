@@ -119,6 +119,8 @@ ScrollCreditsMonLeft:
 	ret
 
 ScrollCreditsMonLeft_SetSCX:
+	ld a, h
+	ld [hSCX], a
 	ldh a, [rLY]
 	cp l
 	jr nz, ScrollCreditsMonLeft_SetSCX
