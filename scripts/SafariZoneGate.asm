@@ -112,9 +112,20 @@ SafariZoneGatePlayerMovingDownScript:
 SafariZoneGateSetScriptAfterMoveScript:
 	call SafariZoneGateReturnSimulatedJoypadStateScript
 	ret nz
+	call .CheckSafariStatus
 	call Delay3
 	ld a, [wNextSafariZoneGateScript]
 	ld [wSafariZoneGateCurScript], a
+	ret
+
+.CheckSafariStatus	;joenote - data in wNextSafariZoneGateScript isn't part of the game save, so a check needs to be done.
+	CheckEvent EVENT_SAFARI_GAME_OVER
+	ret nz
+	CheckEvent EVENT_IN_SAFARI_ZONE
+	ret z
+	;if the safari event is going on but not in game-over, then wNextSafariZoneGateScript needs to hold $05
+	ld a, 5
+	ld [wNextSafariZoneGateScript], a
 	ret
 
 SafariZoneEntranceAutoWalk:
