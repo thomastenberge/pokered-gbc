@@ -1781,7 +1781,6 @@ wRivalName:: ds NAME_LENGTH
 wOptions:: db
 
 wObtainedBadges:: flag_array NUM_BADGES
-	flag_array 8
 ;	BIT_BOULDERBADGE ; 0
 ;	BIT_CASCADEBADGE ; 1
 ;	BIT_THUNDERBADGE ; 2
