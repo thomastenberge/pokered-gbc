@@ -474,7 +474,7 @@ Route13HiddenObjects:
 	db -1 ; end
 
 SafariZoneEntranceHiddenObjects:
-	hidden_object  5,  5, NUGGET, HiddenItems ; inaccessible
+	hidden_object  5,  5, NUGGET, HiddenItems
 	db -1 ; end
 
 SafariZoneWestHiddenObjects:
