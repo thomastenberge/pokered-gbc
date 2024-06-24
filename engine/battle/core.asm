@@ -7388,8 +7388,21 @@ CalcEXPBarPixelLength:
 	; product / needed exp = pixel length
 	ld a, [wEXPBarNeededEXP + 2]
 	ldh [hDivisor], a
+	call .noDivZero	;joenote - do not allow a divisor of 0
 	ld b, $04
 	jp Divide
+.noDivZero
+	ld a, [wEXPBarNeededEXP + 2]
+	ld b, a
+	ld a, [wEXPBarNeededEXP + 1]
+	or b
+	ld b, a
+	ld a, [wEXPBarNeededEXP]
+	or b
+	ret nz
+	inc a
+	ld [hDivisor], a
+	ret	
 
 ; calculates the three byte number starting at [bc]
 ; minus the three byte number starting at [hl]
