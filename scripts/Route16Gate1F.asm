@@ -39,10 +39,8 @@ Route16Gate1FDefaultScript:
 	ld a, SCRIPT_ROUTE16GATE1F_PLAYER_MOVING_UP
 	ld [wRoute16Gate1FCurScript], a
 	ret
-.next_to_counter
-	ld a, SCRIPT_ROUTE16GATE1F_GUARD
-	ld [wRoute16Gate1FCurScript], a
-	ret
+.next_to_counter ;joenote - edited to prevent brute-forcing past the gate guard
+	jp Route16Gate1FGuardScript
 
 .StopsPlayerCoords:
 	dbmapcoord  4,  7
