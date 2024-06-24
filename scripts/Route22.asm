@@ -37,16 +37,16 @@ Route22GetRivalTrainerNoByStarterScript:
 	ret
 
 Route22MoveRivalRightScript:
+	ld a, SPRITE_FACING_RIGHT
+	ldh [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
 	ld de, Route22RivalMovementData
 	ld a, [wSavedCoordIndex]
 	cp $1
 	jr z, .skip_first_right
 	inc de
 .skip_first_right
-	call MoveSprite
-	ld a, SPRITE_FACING_RIGHT
-	ldh [hSpriteFacingDirection], a
-	jp SetSpriteFacingDirectionAndDelay
+	jp MoveSprite
 
 Route22RivalMovementData:
 	db NPC_MOVEMENT_RIGHT
